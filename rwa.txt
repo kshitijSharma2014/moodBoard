@@ -1,6 +1,5 @@
-{
-        data: [[
-            sr_no: '12',
+[
+           { sr_no: '12',
             roleId: '0',
             job_family: 'software',
             role_type: 'role type 1',
@@ -10,8 +9,8 @@
             dateRange: '',
             lastUpdatedOn: '12-03-2019',
             childId: '098765',
-        ],
-        [
+        },
+        {
             sr_no: '123',
             roleId: '1',
             job_family: 'software',
@@ -22,8 +21,8 @@
             dateRange: '',
             lastUpdatedOn: '12-03-2019',
             childId: '098765',
-        ],
-        [
+        },
+        {
             sr_no: '124',
             roleId: '2',
             job_family: 'software',
@@ -34,8 +33,8 @@
             dateRange: '',
             lastUpdatedOn: '12-03-2019',
             childId: '098765',
-        ],
-        [
+        },
+        {
             sr_no: '125',
             roleId: '1',
             job_family: 'software',
@@ -46,5 +45,4 @@
             dateRange: '',
             lastUpdatedOn: '12-03-2019',
             childId: '098765',
-        ]]
-    }
+    }]
