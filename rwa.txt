@@ -1,5 +1,5 @@
-[
-        [
+{
+        data: [[
             sr_no: '12',
             roleId: '0',
             job_family: 'software',
@@ -46,5 +46,5 @@
             dateRange: '',
             lastUpdatedOn: '12-03-2019',
             childId: '098765',
-        ],
-    ]
+        ]]
+    }
