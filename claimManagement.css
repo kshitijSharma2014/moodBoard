@@ -1,0 +1,70 @@
+.df {
+  display: flex;
+}
+
+.fc {
+  flex-direction: column;
+}
+
+.CMAsearch {
+    border: 0;
+    font-size: 0.8rem;
+    color: lightgray;
+    border-radius: 0.4rem;
+    background-color: #343a40;
+    padding-left: 0.4rem;
+    height: 2rem;
+  }
+
+  .CMAlabel {
+    font-size: 1rem;
+    color: #656565;
+    font-weight: 400;
+    margin-bottom: 0.4rem;
+  }
+
+  .CMAsearch:focus {
+    outline: none !important;
+  }
+
+  .m-l-4 {
+    margin-left: 0.4rem;
+  }
+
+  .RWAadd {
+    float: right;
+    margin-right: 20%;
+  }
+
+  .ESAadd {
+    float: right;
+    margin-right: 20%;
+  }
+
+  .CMAdateRangePicker {
+    border: 0;
+    font-size: 0.8rem;
+    color: white;
+    border-radius: 0.4rem;
+    background-color: #6e6e6e;
+    padding: 0.4rem;
+  }
+
+  .rwaModalRow {
+    justify-content: space-between;
+    width: 80%;
+    margin-bottom: 1rem;
+  }
+
+  .dateSelect {
+    width: 180px;
+  }
+
+  .addRWALabel {
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .custom-control-inline {
+    margin-right: 0 !important;
+  }

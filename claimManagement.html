@@ -1,0 +1,236 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="claimManagement.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js" crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@3.5.1/select2.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@3.5.1/select2.min.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+
+</head>
+
+<body>
+
+    <div class="m-l-4 CMAlabel">Role Wise Access</div>
+    <input class="CMAsearch m-l-4" id="RWAsearch" placeholder="Search" />
+    <table id="rWAListTable" class="table table-striped table-light m-l-4"
+        style="width: 80%;color: black;font-size: 0.8rem;">
+        <thead>
+            <tr>
+                <th>Sr No.</th>
+                <th>Role ID</th>
+                <th>Job Family</th>
+                <th>Role Type</th>
+                <th>Vehicle Type</th>
+                <th>client Id</th>
+                <th>SAP Api</th>
+                <th>Per Diem</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Last Updated On</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-secondary btn-sm RWAadd" id="rwaAdd">Add</button>
+
+
+    <div class="m-l-4 CMAlabel">Employee Specific Access</div>
+    <input class="CMAsearch m-l-4" id="ESAsearch" placeholder="Search" />
+    <table id="ESAListTable" class="table table-striped table-light m-l-4"
+        style="width: 80%;color: black;font-size: 0.8rem;">
+        <thead>
+            <tr>
+                <th>Sr No.</th>
+                <th>Employee ID</th>
+                <th>Role ID</th>
+                <th>Job Role Family</th>
+                <th>Role Type</th>
+                <th>Vehicle Type</th>
+                <th>Per Diem</th>
+                <th>Access</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Last Updated On</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-secondary btn-sm ESAadd" id="esaAdd">Add</button>
+
+
+
+    <div class="m-l-4 CMAlabel">Rate Card</div>
+    <input class="CMAsearch m-l-4" id="rateSearch" placeholder="Search" />
+    <table id="rateCardTable" class="table table-striped table-light m-l-4"
+        style="width: 50%;color: black;font-size: 0.8rem;">
+        <thead>
+            <tr>
+                <th>Sr No.</th>
+                <th>Vehicle Type</th>
+                <th>Per Km Rate</th>
+                <th>Access</th>
+                <th>Date Modified</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+
+
+
+
+    <div class="modal" id="newRWA" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Add Row</h5>
+                    <button type="button" class="close closeRwaModal" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="df fc">
+                        <div class="df rwaModalRow">
+                            <div class="addRWALabel">
+                                Role ID
+                            </div>
+                            <div>
+                                <div id='addRowId' class="roleIdSelect"></div>
+                            </div>
+                        </div>
+                        <div class="df rwaModalRow">
+                            <div class="addRWALabel">
+                                Vehicle Type
+                            </div>
+                            <div>
+                                <div id='addvehicleType' class="vehicleTypeSelect"></div>
+                            </div>
+                        </div>
+                        <div class="df rwaModalRow">
+                            <div class="addRWALabel">
+                                Start Date
+                            </div>
+                            <div>
+                                <input id='addStartDate' class="dateSelect CMAdateRangePicker" />
+                            </div>
+                        </div>
+
+                        <div class="df rwaModalRow">
+                            <div class="addRWALabel">
+                                End Date
+                            </div>
+                            <div>
+                                <input id='addEndDate' class="dateSelect CMAdateRangePicker" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary closeRwaModal" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal" id="newESA" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Add Row</h5>
+                    <button type="button" class="close closeESAModal" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="df fc">
+                        <div class="df rwaModalRow">
+                            <div class="addRWALabel">
+                                Role ID
+                            </div>
+                            <div>
+                                <div id='addRowIdEsa' class="roleIdSelect"></div>
+                            </div>
+                        </div>
+                        <div class="df rwaModalRow">
+                            <div class="addRWALabel">
+                                Vehicle Type
+                            </div>
+                            <div>
+                                <div id='addvehicleTypeEsa' class="vehicleTypeSelect"></div>
+                            </div>
+                        </div>
+
+                        <div class="df rwaModalRow">
+                            <div class="addRWALabel">
+                                Access Control
+                            </div>
+                            <div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="addESAaccess1" name="addESAaccess"
+                                        class="custom-control-input">
+                                    <label class="custom-control-label" for="addESAaccess1">Access</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="addESAaccess2" name="addESAaccess"
+                                        class="custom-control-input">
+                                    <label class="custom-control-label" for="addESAaccess2">No Access</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="df rwaModalRow">
+                            <div class="addRWALabel">
+                                Start Date
+                            </div>
+                            <div>
+                                <input id='addStartDateEsa' class="dateSelect CMAdateRangePicker" />
+                            </div>
+                        </div>
+
+                        <div class="df rwaModalRow">
+                            <div class="addRWALabel">
+                                End Date
+                            </div>
+                            <div>
+                                <input id='addEndDateEsa' class="dateSelect CMAdateRangePicker" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary closeESAModal" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script type="text/javascript" src="claimManagement.js"></script>
+
+</body>
+
+</html>
