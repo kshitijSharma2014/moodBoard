@@ -1,47 +1,12 @@
-var roleIdData = [
-    {
-        id: 0,
-        text: 'enhancement'
-    },
-    {
-        id: 1,
-        text: 'bug'
-    },
-    {
-        id: 2,
-        text: 'duplicate'
-    },
-    {
-        id: 3,
-        text: 'invalid'
-    },
-];
-var sapApiData = [
-    {
-        id: 4,
-        text: '12345'
-    },
-    {
-        id: 5,
-        text: '67890'
-    },
-    {
-        id: 6,
-        text: '1234567'
-    },
-    {
-        id: 7,
-        text: '098766'
-    },
-];
+﻿
 var vehicleTypeData = [
     {
-        id: 8,
-        text: 'two Wheeler'
+        id: "80",
+        text: 'Two Wheeler'
     },
     {
-        id: 9,
-        text: 'four Wheeler'
+        id: "90",
+        text: 'Four Wheeler'
     }
 ];
 
@@ -51,8 +16,11 @@ var vehicleId = "vehicleId";
 var esavehicleId = "esavehicleId";
 var sapApId = "sapApId";
 
+var rwaEditMode = false, rwaRowNumEdit, csRowNumEdit, csEditMode = false, rateRowNumEdit, rateEditMode = false, esaEditMode = false, esaRowNumEdit;
+
 $('#newRWA').hide();
 $('#newESA').hide();
+$('#newRate').hide();
 
 
 var waitForEl = function (selector, callback) {
@@ -64,284 +32,201 @@ var waitForEl = function (selector, callback) {
         }, 100);
     }
 };
+var rwaTableCounter = 0;
 
-$('#rWAListTable').DataTable({
-    "ajax": "https://raw.githubusercontent.com/kshitijSharma2014/moodBoard/master/rwa.txt",
-    "paging": false,
-    "searching": false,
-    "info": false,
-    "retrieve": true,
-    serverSide: true,
-    bProcessing: true,
-    columnDefs: [
-        { width: 300, targets: 4 }
-    ],
-    aoColumnDefs: [
-        {
-            bSortable: false,
-            aTargets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+var rateCardData = new Promise(function (resolve, reject) {
+    $.ajax({
+        url: '/ClaimManagementAccess/GetClaimRateData',
+        success: function (data) {
+            resolve(data);
         }
-    ],
+    });
+});
+
+
+function getVehicleNames(vehicles) {
+    return vehicles.map(function (vehicle) {
+        return vehicle.vehicletype
+    }).join(',')
+}
+
+var rwaTable = $('#rWAListTable').DataTable({
+    "ajax": {
+        url: "/ClaimManagementAccess/GetRoleMasterData/",
+        cache: true,
+    },
+    "language": {
+        "infoEmpty": "No records available - Got it?",
+    },
+    "paging": true,
+    "info": true,
+    "retrieve": true,
+    bSortable: true,
+    bProcessing: true,
+    "lengthChange": false,
+    "bLengthChange": false,
     "columns": [
         {
             "data": "sr_no",
             "render": function (data, type, row, meta) {
-                return '<div>' + data + '</div>';
+                ++rwaTableCounter;
+                return '<div>' + rwaTableCounter + '</div>';
             }
         },
         {
-            "data": "roleId",
+            "data": "ijobCode",
             "render": function (data, type, row, meta) {
-                var id = '#' + jId + row.sr_no;
-                waitForEl(id, function () {
-                    $(id).select2({
-                        data: roleIdData,
-                        placeholder: "Select Role ID",
-                        allowClear: true,
-                        closeOnSelect: false,
-                        width: '180px',
-                        multiple: true,
-                    });
-
-                })
-                return '<div id=' + jId + row.sr_no + ' class="jobIdSelect"></div>';
+                return '<div value=' + row.ijobcode + ' class="jobIdSelect">'+row.ijobcode+'</div>';
             }
         },
         {
-            "data": "job_family",
+            "data": "ivehicletype",
             "render": function (data, type, row, meta) {
-                return '<div>' + data + '</div>';
+                return '<div value=' + row.ivehicleid + '>' + row.ivehicletype + '</div>';
+            }
+        },
+     
+        {
+            "data": "iperdiem",
+            "render": function (data, type, row, meta) {
+                return '<div>' + row.iperdiem + '</div>';
             }
         },
         {
-            "data": "role_type",
+            "data": "fromdate",
             "render": function (data, type, row, meta) {
-                return '<div>' + data + '</div>';
+                return '<div>' + row.fromdate + '</div>';
             }
         },
         {
-            "data": "vehicle_type",
+            "data": "todate",
             "render": function (data, type, row, meta) {
-                var id = '#' + vehicleId + row.sr_no;
-                waitForEl(id, function () {
-                    $(id).select2({
-                        data: vehicleTypeData,
-                        placeholder: "Select Vehicle Type",
-                        allowClear: true,
-                        closeOnSelect: false,
-                        width: '180px',
-                        multiple: true,
-                    });
-                })
-                return '<div id=' + vehicleId + row.sr_no + ' class="vehicleTypeSelect"></div>';
+                return '<div>' + row.todate + '</div>';
             }
         },
         {
-            "data": "childId",
+            "data": "ilastupdatedon",
             "render": function (data, type, row, meta) {
-                return '<div>' + data + '</div>';
+                return '<div>' + row.ilastupdatedon + '</div>';
             }
         },
         {
-            "data": "sap_api",
+            "data": "imodifiedby",
             "render": function (data, type, row, meta) {
-                return '<div id=' + sapApId + row.sr_no + ' class="sapApiSelect">1234</div>';
+                return '<div>' + row.imodifiedby + '</div>';
             }
         },
         {
-            "data": "perdiem",
             "render": function (data, type, row, meta) {
-                return '<div>' + data + '</div>';
+                return '<img src="/Areas/Admin/images/editRow.png" class="rwaEdit" style="width: 14px;cursor:pointer;" id=' + row.ijobcode + '/>';
             }
         },
-        {
-            "targets": 7,
-            "data": "dateRange",
-            "render": function (data, type, row, meta) {
-                var id = '#start' + row.sr_no;
-                waitForEl(id, function () {
-                    $(id).daterangepicker({
-                        singleDatePicker: true,
-                        timePicker: true,
-                        startDate: moment().startOf('hour'),
-                        endDate: moment().startOf('hour').add(32, 'hour'),
-                        locale: {
-                            format: 'M-DD-YYYY hh:mm A'
-                        }
-                    }, function (start) {
-                        $(id).val(start);
-                    });
-                })
-                return '<input id=' + 'start' + row.sr_no + ' class="RWAdateRangepicker CMAdateRangePicker" />';
-            }
-        },
-        {
-            "targets": 8,
-            "data": "dateRange",
-            "render": function (data, type, row, meta) {
-                var id = '#end' + row.sr_no;
-                waitForEl(id, function () {
-                    $(id).daterangepicker({
-                        singleDatePicker: true,
-                        timePicker: true,
-                        startDate: moment().startOf('hour'),
-                        endDate: moment().startOf('hour').add(32, 'hour'),
-                        locale: {
-                            format: 'M-DD-YYYY hh:mm A'
-                        }
-                    }, function (start) {
-                        $(id).val(start);
-                    });
-                })
-                return '<input id=' + 'end' + row.sr_no + ' class="RWAdateRangepicker CMAdateRangePicker" />';
-            }
-        },
-        {
-            "data": "lastUpdatedOn",
-            "render": function (data, type, row, meta) {
-                return '<div>' + data + '</div>';
-            }
-        },
-    ]
+    ],
 });
 $('#rWAListTable').removeClass('form-inline dt-bootstrap no-footer dataTable');
 $('#rWAListTable_wrapper').removeClass('dataTables_wrapper form-inline dt-bootstrap no-footer');
 
+var rwaTableIDs = [];
 
-$('#ESAListTable').DataTable({
-    "ajax": "https://raw.githubusercontent.com/kshitijSharma2014/moodBoard/master/esa.txt",
-    "paging": false,
-    "searching": false,
-    "info": false,
-    "retrieve": true,
-    serverSide: true,
-    bProcessing: true,
-    columnDefs: [
-        { width: 300, targets: 4 }
-    ],
-    aoColumnDefs: [
-        {
-            bSortable: false,
-            aTargets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+rwaTable.on('search.dt', function () {
+    //filtered rows data as arrays
+    let searchInput = $('#rWAListTable_filter input').val() || "";
+    if (searchInput.length === 0) {
+        rwaTableIDs = [];
+    }
+    else {
+        let tableData =  rwaTable.rows({ filter: 'applied' }).data();
+        let length = tableData.length;
+        rwaTableIDs = [];
+        for (let i = 0; i < length; ++i) {
+            rwaTableIDs.push(tableData[i].ijobcode)
         }
-    ],
+        console.log(rwaTableIDs);
+    }
+})
+
+var empTableCounter=0;
+
+var esaTable = $('#ESAListTable').DataTable({
+    "ajax": {
+        url:"/ClaimManagementAccess/GetEmpMasterData",
+        cache: true,
+    },
+    "language": {
+        "infoEmpty": "No records available - Got it?",
+    },
+    "paging": true,
+    "info": true,
+    "retrieve": true,
+    bSortable: true,
+    bProcessing: true,
+    "lengthChange": false,
+    "bLengthChange": false,
     "columns": [
         {
             "data": "sr_no",
             "render": function (data, type, row, meta) {
-                return '<div>' + data + '</div>';
+                ++empTableCounter;
+                return '<div>' + empTableCounter + '</div>';
             }
         },
         {
             "data": "employeeId",
             "render": function (data, type, row, meta) {
-                return '<div>' + data + '</div>';
+                return '<div>' + row.iemployeeid + '</div>';
             }
         },
         {
-            "data": "roleId",
+            "data": "ijobCode",
             "render": function (data, type, row, meta) {
-                var id = '#' + jesaId + row.sr_no;
-                waitForEl(id, function () {
-                    $(id).select2({
-                        data: roleIdData,
-                        placeholder: "Select Role ID",
-                        allowClear: true,
-                        closeOnSelect: false,
-                        width: '180px',
-                        multiple: true,
-                    });
-
-                })
-                return '<div id=' + jesaId + row.sr_no + ' class="jobIdSelect"></div>';
+                return '<div value=' + row.ijobcode + ' class="jobIdSelect">' + row.ijobcode + '</div>';
             }
         },
         {
-            "data": "job_role_family",
+            "data": "ivehicletype",
             "render": function (data, type, row, meta) {
-                return '<div>' + data + '</div>';
-            }
-        },
-        {
-            "data": "role_type",
-            "render": function (data, type, row, meta) {
-                return '<div>' + data + '</div>';
-            }
-        },
-        {
-            "data": "vehicle_type",
-            "render": function (data, type, row, meta) {
-                var id = '#' + esavehicleId + row.sr_no;
-                waitForEl(id, function () {
-                    $(id).select2({
-                        data: vehicleTypeData,
-                        placeholder: "Select Vehicle Type",
-                        allowClear: true,
-                        closeOnSelect: false,
-                        width: '180px',
-                        multiple: true,
-                    });
-                })
-                return '<div id=' + esavehicleId + row.sr_no + ' class="vehicleTypeSelect"></div>';
+                return '<div value=' + row.ivehicletype + ' >' + row.ivehicletype + '</div>';
             }
         },
         {
             "data": "perdiem",
             "render": function (data, type, row, meta) {
-                return '<div>' + data + '</div>';
+                return '<div>' + row.iperdiem + '</div>';
             }
         },
         {
             "data": "access",
             "render": function (data, type, row, meta) {
-                return '<div><input type="radio" name=' + "CMAaccess" + row.sr_no + '>Access</input>' +
-                    '<input type="radio" name=' + "CMAaccess" + row.sr_no + '>No Access</input></div>'
+                return +row.iclaimaccess ? '<div>Yes</div>' : '<div>No</div>';
             }
         },
         {
             "data": "startDate",
             "render": function (data, type, row, meta) {
-                var id = '#startesa' + row.sr_no;
-                waitForEl(id, function () {
-                    $(id).daterangepicker({
-                        singleDatePicker: true,
-                        timePicker: true,
-                        startDate: moment().startOf('hour'),
-                        endDate: moment().startOf('hour').add(32, 'hour'),
-                        locale: {
-                            format: 'M-DD-YYYY hh:mm A'
-                        }
-                    }, function (start) {
-                        $(id).val(start);
-                    });
-                })
-                return '<input id=' + 'startesa' + row.sr_no + ' class="RWAdateRangepicker CMAdateRangePicker" />';
+                return '<div>' + row.fromdate + '</div>';
             }
         },
         {
             "data": "endDate",
             "render": function (data, type, row, meta) {
-                var id = '#endesa' + row.sr_no;
-                waitForEl(id, function () {
-                    $(id).daterangepicker({
-                        singleDatePicker: true,
-                        timePicker: true,
-                        startDate: moment().startOf('hour'),
-                        endDate: moment().startOf('hour').add(32, 'hour'),
-                        locale: {
-                            format: 'M-DD-YYYY hh:mm A'
-                        }
-                    }, function (start) {
-                        $(id).val(start);
-                    });
-                })
-                return '<input id=' + 'endesa' + row.sr_no + ' class="RWAdateRangepicker CMAdateRangePicker" />';
+                return '<div>' + row.todate + '</div>';
             }
         },
         {
-            "data": "lastUpdatedOn",
+            "data": "ilastupdatedon",
             "render": function (data, type, row, meta) {
-                return '<div>' + data + '</div>';
+                return '<div>' + row.ilastupdatedon + '</div>';
+            }
+        },
+          {
+              "data": "imodifiedby",
+              "render": function (data, type, row, meta) {
+                  return '<div>' + row.imodifiedby + '</div>';
+              }
+          },
+        {
+            "render": function (data, type, row, meta) {
+                return '<img src="/Areas/Admin/images/editRow.png" class="esaEdit" style="width: 14px;cursor:pointer;" id=' + row.iemployeeid + '/>';
             }
         },
     ]
@@ -349,103 +234,742 @@ $('#ESAListTable').DataTable({
 $('#ESAListTable').removeClass('form-inline dt-bootstrap no-footer dataTable');
 $('#ESAListTable_wrapper').removeClass('dataTables_wrapper form-inline dt-bootstrap no-footer');
 
-$('#rateCardTable').DataTable({
+
+var esaTableIDs = [];
+
+esaTable.on('search.dt', function () {
+    //filtered rows data as arrays
+    let searchInput = $('#rWAListTable_filter input').val() || "";
+    if (searchInput.length === 0) {
+        esaTableIDs = [];
+    }
+    else {
+        let tableData = esaTable.rows({ filter: 'applied' }).data();
+        let length = tableData.length;
+        esaTableIDs = [];
+        for (let i = 0; i < length; ++i) {
+            esaTableIDs.push(tableData[i].ijobcode)
+        }
+        console.log(esaTableIDs);
+    }
+})
+
+var rateCardCount = 0;
+
+var rateCardTable = $('#rateCardTable').DataTable({
+    "ajax": '/ClaimManagementAccess/GetClaimRateData',
+    "paging": false,
+    "info": false,
+    "retrieve": true,
+    bSortable: true,
+    bProcessing: true,
+    "searching": false,
+    "columns": [
+        {
+            "data": "sr_no",
+            "render": function (data, type, row, meta) {
+                ++rateCardCount;
+                return '<div>' + rateCardCount + '</div>';
+            }
+        },
+         {
+             "data": "vehicletype",
+             "render": function (data, type, row, meta) {
+                 return '<div id = ' + row.vehicleid + '>' + row.vehicletype + '</div>';
+             }
+         },
+          {
+              "data": "perkmrate",
+              "render": function (data, type, row, meta) {
+                  return '<div>' + data + '</div>';
+              }
+          },
+           {
+               "data": "lastupdatedon",
+               "render": function (data, type, row, meta) {
+                  
+                   return '<div>' + data + '</div>';
+               }
+           },
+           {
+               "data": "imodifiedby",
+               "render": function (data, type, row, meta) {
+                   return '<div>' + row.imodifiedby + '</div>';
+               }
+           },
+           {
+               "render": function (data, type, row, meta) {
+                   return '<img src="/Areas/Admin/images/editRow.png" class="rateEdit" style="width: 14px;cursor:pointer;" />';
+               }
+           },
+    ]
+});
+
+
+
+$('#rateCardTable').removeClass('form-inline dt-bootstrap no-footer dataTable');
+$('#rateCardTable_wrapper').removeClass('dataTables_wrapper form-inline dt-bootstrap no-footer');
+
+
+
+var CSTableCounter = 0;
+var clientSapTable = $('#clientSapTable').DataTable({
+    "ajax": "/ClaimManagementAccess/GetClientSAPAPIData",
     "paging": false,
     "searching": false,
     "info": false,
     "retrieve": true,
-    "ajax": ''
+    bProcessing: true,
+    bSortable: true,
+    "columns": [
+        {
+            "render": function (data, type, row, meta) {
+                ++CSTableCounter;
+                return '<div>' + CSTableCounter + '</div>';
+            }
+        },
+         {
+             "data": "iclientid",
+             "render": function (data, type, row, meta) {
+                 return '<div>' + row.iclientid + '</div>';
+             }
+         },
+          {
+              "data": "isapapiid",
+              "render": function (data, type, row, meta) {
+                  return '<div>' + row.isapapiid + '</div>';
+              }
+          },
+           {
+               "data": "ilastupdatedon",
+               "render": function (data, type, row, meta) {
+
+                   return '<div>' + row.ilastupdatedon + '</div>';
+               }
+           },
+           {
+               "data": "imodifiedby",
+               "render": function (data, type, row, meta) {
+                   return '<div>' + row.imodifiedby + '</div>';
+               }
+           },
+           {
+               "render": function (data, type, row, meta) {
+                   return '<img src="/Areas/Admin/images/editRow.png" class="csEdit" style="width: 14px;cursor:pointer;" />';
+               }
+           },
+    ]
 });
 
 
-var rWAListTable = $('#rWAListTable').DataTable();
-$('#rwaAdd').on('click', function () {
-    $('#newRWA').show();
-    $('#addRowId').select2({
-        data: vehicleTypeData,
-        placeholder: "Select Role Id",
-        allowClear: true,
-        closeOnSelect: false,
-        width: '180px',
-        multiple: true,
-    });
-    $('#addvehicleType').select2({
-        data: vehicleTypeData,
-        placeholder: "Select Vehicle Type",
-        allowClear: true,
-        closeOnSelect: false,
-        width: '180px',
-        multiple: true,
-    });
-    $('#addStartDate').daterangepicker({
-        singleDatePicker: true,
-        timePicker: true,
-        startDate: moment().startOf('hour'),
-        endDate: moment().startOf('hour').add(32, 'hour'),
-        locale: {
-            format: 'M-DD-YYYY hh:mm A'
-        }
-    }, function (start) {
-        $('#addStartDate').val(start);
-    });
-    $('#addEndDate').daterangepicker({
-        singleDatePicker: true,
-        timePicker: true,
-        startDate: moment().startOf('hour'),
-        endDate: moment().startOf('hour').add(32, 'hour'),
-        locale: {
-            format: 'M-DD-YYYY hh:mm A'
-        }
-    }, function (start) {
-        $('#addEndDate').val(start);
-    });
-});
 
-$('#esaAdd').on('click', function () {
-    $('#newESA').show();
-    $('#addRowIdEsa').select2({
-        data: vehicleTypeData,
-        placeholder: "Select Role Id",
-        allowClear: true,
-        closeOnSelect: false,
-        width: '180px',
-        multiple: true,
-    });
-    $('#addvehicleTypeEsa').select2({
-        data: vehicleTypeData,
-        placeholder: "Select Vehicle Type",
-        allowClear: true,
-        closeOnSelect: false,
-        width: '180px',
-        multiple: true,
-    });
-    $('#addStartDateEsa').daterangepicker({
-        singleDatePicker: true,
-        timePicker: true,
-        startDate: moment().startOf('hour'),
-        endDate: moment().startOf('hour').add(32, 'hour'),
-        locale: {
-            format: 'M-DD-YYYY hh:mm A'
-        }
-    }, function (start) {
-        $('#addStartDate').val(start);
-    });
-    $('#addEndDateEsa').daterangepicker({
-        singleDatePicker: true,
-        timePicker: true,
-        startDate: moment().startOf('hour'),
-        endDate: moment().startOf('hour').add(32, 'hour'),
-        locale: {
-            format: 'M-DD-YYYY hh:mm A'
-        }
-    }, function (start) {
-        $('#addEndDateEsa').val(start);
-    });
-});
+$('#clientSapTable').removeClass('form-inline dt-bootstrap no-footer dataTable');
+$('#clientSapTable_wrapper').removeClass('dataTables_wrapper form-inline dt-bootstrap no-footer');
 
-$('.closeRwaModal').on('click', function () {
-    $('#newRWA').hide();
-});
-$('.closeESAModal').on('click', function () {
-    $('#newESA').hide();
-});
+function IDGenerator() {
+	 
+    this.length = 8;
+    this.timestamp = +new Date;
+		 
+    var _getRandomInt = function( min, max ) {
+        return Math.floor( Math.random() * ( max - min + 1 ) ) + min;
+    }
+		 
+    this.generate = function() {
+        var ts = this.timestamp.toString();
+        var parts = ts.split( "" ).reverse();
+        var id = "";
+			 
+        for( var i = 0; i < this.length; ++i ) {
+            var index = _getRandomInt( 0, parts.length - 1 );
+            id += parts[index];	 
+        }
+			 
+        return id;
+    }
+
+		 
+}
+
+var generator = new IDGenerator();
+
+    $('#rwaAdd').on('click', function () {
+        var data;
+        $('#newRWA').show();
+        $('#addStartDate').datetimepicker({
+            format: 'dd-M-yyyy hh:ii',
+            startDate: new Date(),
+        });
+        $('#addEndDate').datetimepicker({
+            format: 'dd-M-yyyy hh:ii',
+            startDate: new Date(),
+
+        });
+
+        $('#addvehicleType').chosen();
+        $('#addvehicleType').empty();
+        rateCardData.then(function (data) {
+            data.data.map(function (item) {
+                $('#addvehicleType').append('<option value=' + item.vehicleid + '>' + item.vehicletype + '</option>');
+            });
+            $("#addvehicleType").trigger("chosen:updated");
+        });
+            $('#addRoleId').chosen();
+            $('#addRoleId').empty();
+
+        $.ajax({
+            url: "/ClaimManagementAccess/GetJobCodeJSON",
+            dataType: "json",
+        }).done(function (data) {
+            data.jobcodes.map(function (item) {
+                $('#addRoleId').append('<option value=' + item.jobcode + '>' + item.jobcode + '</option>');
+            });
+            $('#addRoleId').prop('disabled', false);
+            $("#addRoleId").trigger("chosen:updated");
+        });
+        $(document).on("click", function (e) {
+            var container = $("#addRoleId");
+
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
+                container.trigger('chosen:close');
+            }
+        });
+    });
+
+
+
+
+    $('#esaAdd').on('click', function () {
+
+        $('#newESA').show();
+
+        $('#addvehicleTypeEsa').chosen();
+        $('#addvehicleTypeEsa').empty();
+        $.ajax({
+            url: "/ClaimManagementAccess/GetClaimRateData",
+            dataType: "json",
+        }).done(function (data) {
+            data.data.map(function (item) {
+                $('#addvehicleTypeEsa').append('<option value=' + item.vehicleid + '>' + item.vehicletype + '</option>');
+            });
+            $("#addvehicleTypeEsa").trigger("chosen:updated");
+        });
+
+
+
+        $('#addStartDateEsa').datetimepicker({
+            startDate: new Date(),
+            format: 'dd-M-yyyy hh:ii',
+        });
+        $('#addEndDateEsa').datetimepicker({
+            startDate: new Date(),
+            format: 'dd-M-yyyy hh:ii',
+        });
+        var selectedEmp = [];
+
+        $('#addEmpIdEsa').chosen(function () {
+            $('#addEmpIdEsa').val(selectedEmp)
+            selectedEmp = $(this).val();
+            
+        });
+        $('#addEmpIdEsa_chosen input').attr("onkeyup", "SearchEmpSolr(this.value)");
+       /* $.ajax({
+            url: "/ClaimManagementAccess/GetEmplistJSON",
+            dataType: "json",
+        }).done(function (data) {
+            data.map(function (item) {
+                $('#addEmpIdEsa').append('<option value=' + item.empid + '>' + item.empid + '</option>');
+            });
+            $("#addEmpIdEsa").trigger("chosen:updated");
+        });*/
+        $(document).on("click", function (e) {
+            var container = $("#addEmpIdEsa");
+
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
+                container.trigger('chosen:close');
+            }
+        });
+    });
+
+    $('#rateAdd').on('click', function () {
+        var data;
+        $('#newRate').show();
+
+    });
+
+
+
+    $('#CSadd').on('click', function () {
+        var data;
+        $('#newCS').show();
+        $('#newClientId').chosen();
+        $('#newClientId').empty();
+
+        $.ajax({
+            url: "/ClaimManagementAccess/GetClientIDJSON",
+            dataType: "json",
+        }).done(function (data) {
+            data.clientids.map(function (item) {
+                $('#newClientId').append('<option value=' + item.clientid + '>' + item.clientid + '</option>');
+            });
+            $('#newClientId').prop('disabled', false);
+            $("#newClientId").trigger("chosen:updated");
+        });
+    });
+
+
+    function checkZero(data) {
+        if (data.length == 1) {
+            data = "0" + data;
+        }
+        return data;
+    }
+
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+    function formatDate(today) {
+        var day = today.getDate() + "";
+        var month = (today.getMonth() + 1) + "";
+        var year = today.getFullYear() + "";
+        var hour = today.getHours() + "";
+        var minutes = today.getMinutes() + "";
+        var seconds = today.getSeconds() + "";
+
+        day = checkZero(day);
+        year = checkZero(year);
+        hour = checkZero(hour);
+        mintues = checkZero(minutes);
+        seconds = checkZero(seconds);
+
+        return day + "-" + months[month - 1] + "-" + year + " " + hour + ":" + minutes + ":" + seconds;
+    }
+
+    function unFormatDate(date) {
+        var dateValAr = date.split(' ')[0];
+        var dateAr = dateValAr.split('-');
+        var dateVal = dateAr[2] + '-' + dateAr[1] + '-' + dateAr[0] + ' ' + dateValAr[1];
+       return new Date(dateVal);
+    }
+
+
+    function rwaAdd() {
+        var selectedRoles = $("#addRoleId").val();
+        var vehicleId = $("#addvehicleType").val().join(',');
+        var iperdiem = $("#rwaPerdiem").val().toString();
+        var fromdate = formatDate($('#addStartDate').data("datetimepicker").getDate());
+        var todate = formatDate($('#addEndDate').data("datetimepicker").getDate());
+        var ilastupdatedon = formatDate(new Date(Date.now()));
+        var datatableData = [];
+        let selectedVehicles, vehicletype;
+        rateCardData.then(function (data) {
+            selectedVehicles = data.data.filter(function (value) {
+                return value.vehicleid === vehicleId;
+            });
+            vehicletype = getVehicleNames(selectedVehicles);
+            selectedRoles.map(function (selectedRole) {
+                datatableData.push({
+                    ijobcode: selectedRole,
+                    ivehicleid: vehicleId,
+                    iperdiem: iperdiem,
+                    fromdate: fromdate,
+                    todate: todate,
+                    ilastupdatedon: ilastupdatedon,
+                    ivehicletype: vehicletype,
+                });
+            });
+
+            $.ajax({
+                type: "POST",
+                url: '/ClaimManagementAccess/UpdateRoleClaimAccess',
+                data: { 'roledata': datatableData },
+                'Content-Type': 'application/json; charset=utf-8',
+                async: false,
+                success: function (response) {
+                    if (rwaEditMode)
+                    {
+                       // rwaTable.row(rwaRowNumEdit).data(datatableData[0]).draw()
+                        rwaEditMode = false;
+                        rwaTableCounter = 0;
+                        rwaTable.ajax.reload();
+                    }
+                    else {
+                        /*for (let i = 0; i < datatableData.length; ++i) {
+                            rwaTable.row.add(datatableData[i]).draw(false);
+
+                        }*/
+                        rwaTableCounter = 0;
+                        rwaTable.ajax.reload();
+                    }
+                    $("#addRoleId").prop('disabled', false);
+                    closeRwaModal();
+                }
+            });
+        });
+               
+    };
+
+    function ESAaddRow() {
+        var selectedEmps = $("#addEmpIdEsa").val();
+        var fromdate = formatDate($('#addStartDateEsa').data("datetimepicker").getDate());
+        var iperdiem = $("#esaPerdiem").val().toString();
+        var todate = formatDate($('#addEndDateEsa').data("datetimepicker").getDate());
+        var datatableData = [];
+        var vehicleId = $("#addvehicleTypeEsa").val().join(',');
+        var ilastupdatedon = formatDate(new Date(Date.now()));
+        var datatableData = [];
+        let selectedVehicles, vehicletype;
+        rateCardData.then(function (data) {
+            selectedVehicles = data.data.filter(function (value) {
+                return value.vehicleid === vehicleId;
+            });
+            vehicletype = getVehicleNames(selectedVehicles);
+            selectedEmps.map(function (selectedEmp) {
+                datatableData.push({
+                    iemployeeid: selectedEmp,
+                    ijobcode: '',
+                    ivehicleid: vehicleId,
+                    iperdiem: iperdiem,
+                    fromdate: fromdate,
+                    todate: todate,
+                    ilastupdatedon: ilastupdatedon,
+                    ivehicletype: vehicletype,
+                    iclaimaccess: $("input[name='addESAaccess']:checked").val() === "yes" ? 1 : 0,
+                });
+            });
+      
+        $.ajax({
+            type: "POST",
+            url: '/ClaimManagementAccess/UpdateEmpClaimAccess',
+            data: { 'empdata': datatableData },
+            'Content-Type': 'application/json; charset=utf-8',
+            async: false,
+            success: function (data) {
+                if (esaEditMode) {
+                    // rwaTable.row(rwaRowNumEdit).data(datatableData[0]).draw()
+                    esaEditMode = false;
+                    empTableCounter = 0;
+                    esaTable.ajax.reload();
+                }
+                else {
+                    empTableCounter = 0;
+                    esaTable.ajax.reload();
+
+                   /* for (let i = 0; i < datatableData.length; ++i) {
+                        esaTable.row.add(datatableData[i]).draw(false);
+                    }*/
+                }
+
+                closeEsaModal();
+            }
+        });
+        });
+
+
+    }
+
+    function rateaddRow() {
+        var vehicleType = $('#newVehicleType').val();
+        var perKmRate = $('#perKmRate').val();
+        var data = [];
+        
+        if (rateEditMode) {
+            data = [
+                {
+                    vehicletype: vehicleType,
+                    perkmrate: perKmRate,
+                    lastupdatedon: formatDate(new Date(Date.now())),
+                    vehicleid: $('#newVehicleType').attr('data-id'),
+                }
+            ];
+        }
+        else {
+            data = [{
+                vehicletype: vehicleType,
+                perkmrate: perKmRate,
+                lastupdatedon: formatDate(new Date(Date.now())),
+                vehicleid: generator.generate(),
+            }];
+        }
+        
+        $.ajax({
+            type: "POST",
+            url: '/ClaimManagementAccess/UpdateRateCardData',
+            data: { ratedata: data },
+            'Content-Type': 'application/json; charset=utf-8',
+            async: false,
+            success: function (response) {
+                if (rateEditMode) {
+                    //rateCardTable.row(rateRowNumEdit).data(data[0]).draw();
+                    rateEditMode = false;
+                    rateCardCount = 0;
+                    rateCardTable.ajax.reload();
+                }
+                else {
+                    rateCardCount = 0;
+                    rateCardTable.ajax.reload();
+                   // rateCardTable.row.add(data[0]).draw(false);
+
+                }
+                $("#newVehicleType").prop('disabled', false);
+                closeRateModal();
+            }
+        });
+    
+    };
+
+    function CsaddRow() {
+        var iclientids = $('#newClientId').val();
+        var isapapiid = $('#newSapApiId').val();
+        var data = [];
+
+        iclientids.map(function (iclientid) {
+            data.push({
+                iclientid: iclientid,
+                isapapiid: isapapiid,
+                ilastupdatedon: formatDate(new Date(Date.now())),
+            });
+        });
+        $.ajax({
+            type: "POST",
+            url: '/ClaimManagementAccess/UpdateCSData',
+            data: { csdata: data },
+            'Content-Type': 'application/json; charset=utf-8',
+            async: false,
+            success: function (responnse) {
+                if (csEditMode) {
+                    //clientSapTable.row(rwaRowNumEdit).data(data[0]).draw()
+                    csEditMode = false;
+                    CSTableCounter = 0;
+                    clientSapTable.ajax.reload();
+                }
+                else {
+                    /*for (var i = 0; i < data.length; ++i) {
+                        clientSapTable.row.add(data[i]).draw(false);
+                    }*/
+                    CSTableCounter = 0;
+                    clientSapTable.ajax.reload();
+                }
+                closeCSModal();
+            }
+        });
+    }
+
+    function SearchEmpSolr(queryParam) {
+        if (queryParam.length > 2) {
+            var drpItems = [];
+           /* $("#addEmpIdEsa").empty().append($('< option>'))
+            $("#addEmpIdEsa").trigger("chosen:updated");*/
+            $.ajax({
+                type: "GET",
+                url: '/ClaimManagementAccess/hotSpotSearch?srchTxt=' + queryParam,
+                'Content-Type': 'application/html; charset=utf-8',
+                success: function (responnse) {
+                    $('#addEmpIdEsa_chosen .chosen-results li').remove();
+
+                    let data = JSON.parse(responnse).response.docs || [];
+                    data.map(function (item) {
+                        $('#addEmpIdEsa').append('<option value=' + item.employeeid + '>' + item.employeeid + '</option>');
+                    });
+                    $("#addEmpIdEsa").trigger("chosen:updated");
+                }
+            });
+
+            $("#addEmpIdEsa").val()
+        }
+       
+    }
+
+    $('#rWAListTable').on('click', 'tbody .rwaEdit', function () {
+        var data_row = rwaTable.row($(this).closest('tr')).data();
+        rwaEditMode = true;
+        $("#newRWA").show();
+
+        $('#addStartDate').datetimepicker({
+            startDate: new Date(),
+            format: 'dd-M-yyyy hh:ii',
+        });
+//        $('#addStartDate').data("datetimepicker").date = unFormatDate(data_row.fromdate)
+
+        $('#addEndDate').datetimepicker({
+            startDate: new Date(),
+            format: 'dd-M-yyyy hh:ii',
+        });
+   //     $('#addEndDate').data("datetimepicker").date = unFormatDate(data_row.todate)
+
+        $('#rwaPerdiem').val(data_row.iperdiem);
+
+        $('#addvehicleType').chosen();
+        $('#addvehicleType').empty();
+        rateCardData.then(function (data) {
+            data.data.map(function (item) {
+                $('#addvehicleType').append('<option value=' + item.vehicleid + '>' + item.vehicletype + '</option>');
+            });
+            $("#addvehicleType").val(data_row.ivehicleid);
+            $("#addvehicleType").trigger("chosen:updated");
+        });
+        $('#addRoleId').chosen();
+        $('#addRoleId').empty();
+
+        $.ajax({
+            url: "/ClaimManagementAccess/GetJobCodeJSON",
+            dataType: "json",
+        }).done(function (data) {
+            data.jobcodes.map(function (item) {
+                $('#addRoleId').append('<option value=' + item.jobcode + '>' + item.jobcode + '</option>');
+            });
+            $("#addRoleId").val(data_row.ijobcode);
+            $('#addRoleId').prop('disabled', true);
+            $("#addRoleId").trigger("chosen:updated");
+
+        });
+        $(document).on("click", function (e) {
+            var container = $("#addRoleId");
+
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
+                container.trigger('chosen:close');
+            }
+        });
+
+        rwaRowNumEdit = rwaTable.row($(this).closest('tr'))[0][0];
+    });
+
+    $('#ESAListTable').on('click', 'tbody .esaEdit', function () {
+        var data_row = esaTable.row($(this).closest('tr')).data();
+        esaEditMode = true;
+        $("#newESA").show();
+
+        $('#addStartDateEsa').datetimepicker({
+            startDate: new Date(),
+            format: 'dd-M-yyyy hh:ii',
+        });
+        //        $('#addStartDate').data("datetimepicker").date = unFormatDate(data_row.fromdate)
+
+        $('#addEndDateEsa').datetimepicker({
+            startDate: new Date(),
+            format: 'dd-M-yyyy hh:ii',
+        });
+        //     $('#addEndDate').data("datetimepicker").date = unFormatDate(data_row.todate)
+
+        $('#esaPerdiem').val(data_row.iperdiem);
+        var radioVal = data_row.iclaimaccess === 0 ? "no" : "yes";
+        $("input[name=addESAaccess][value=" + radioVal + "]").prop('checked', true);
+
+        $('#addvehicleTypeEsa').chosen();
+        $('#addvehicleTypeEsa').empty();
+        rateCardData.then(function (data) {
+            data.data.map(function (item) {
+                $('#addvehicleTypeEsa').append('<option value=' + item.vehicleid + '>' + item.vehicletype + '</option>');
+            });
+            $("#addvehicleTypeEsa").val(data_row.ivehicleid);
+            $("#addvehicleTypeEsa").trigger("chosen:updated");
+        });
+        $('#addEmpIdEsa').chosen();
+        $('#addEmpIdEsa').empty();
+
+        $.ajax({
+            url: "/ClaimManagementAccess/GetEmplistJSON",
+            dataType: "json",
+        }).done(function (data) {
+            data.map(function (item) {
+                $('#addEmpIdEsa').append('<option value=' + item.empid + '>' + item.empid + '</option>');
+            });
+            $("#addEmpIdEsa").val(data_row.iemployeeid);
+            $('#addEmpIdEsa').prop('disabled', true);
+            $("#addEmpIdEsa").trigger("chosen:updated");
+        });
+        $(document).on("click", function (e) {
+            var container = $("#addEmpIdEsa");
+
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
+                container.trigger('chosen:close');
+            }
+        });
+        
+        esaRowNumEdit = esaTable.row($(this).closest('tr'))[0][0];
+    });
+
+    $('#clientSapTable').on('click', 'tbody .csEdit', function () {
+        csEditMode = true;
+        var data_row = clientSapTable.row($(this).closest('tr')).data();
+        rwaEditMode = true;
+        $("#newCS").show();
+
+        $('#newClientId').chosen();
+        $('#newClientId').empty();
+
+        $.ajax({
+            url: "/ClaimManagementAccess/GetClientIDJSON",
+            dataType: "json",
+        }).done(function (data) {
+            data.clientids.map(function (item) {
+                $('#newClientId').append('<option value=' + item.clientid + '>' + item.clientid + '</option>');
+            });
+            $("#newClientId").val(data_row.iclientid);
+            $('#newClientId').prop('disabled', true);
+            $("#newClientId").trigger("chosen:updated");
+        });
+        $('#newSapApiId').val(data_row.isapapiid);
+        csRowNumEdit = rwaTable.row($(this).closest('tr'))[0][0];
+    });
+
+    $('#rateCardTable').on('click', 'tbody .rateEdit', function () {
+        csEditMode = true;
+        var data_row = rateCardTable.row($(this).closest('tr')).data();
+        rateEditMode = true;
+        $("#newRate").show();
+        $('#newVehicleType').val(data_row.vehicletype);
+        $("#newVehicleType").prop('disabled', true);
+        $('#newVehicleType').attr('data-id', data_row.vehicleid)
+        $('#perKmRate').val(data_row.perkmrate);
+        rateRowNumEdit = rateCardTable.row($(this).closest('tr'))[0][0];
+    });
+
+    function closeCSModal() {
+        $('#newCS').hide();
+    }
+
+    function closeRateModal() {
+        $('#newRate').hide();
+
+    }
+
+    function closeRwaModal() {
+        $('#newRWA').hide();
+        $('#addRoleId').chosen('destroy');
+        $('#addvehicleType').chosen('destroy');
+    }
+
+    function closeEsaModal() {
+        $('#newESA').hide();
+        $('#addEmpIdEsa').chosen('destroy');
+        $('#addvehicleTypeEsa').chosen('destroy');
+    }
+
+    function getData(table) {
+        var data = table.rows().data();
+        delete data.context;
+        //delete data.length;   // Do not delete this one! Needed for the loop below.
+        delete data.selector;
+        delete data.ajax;
+
+        console.log(JSON.stringify(data));
+
+        // Make the resulting "striped" object an array.
+        var dataAsArray = [];
+        console.log(data.length);
+
+        for (i = 0; i < data.length; i++) {
+            dataAsArray.push(data[i]);
+        }
+        return dataAsArray;
+    }
+
+    function tableExport(tabType) {
+        let ids = tabType === 1 ? rwaTableIDs : esaTableIDs
+        $.ajax({
+            url: "/ClaimManagementAccess/ExportData?TabType=" + tabType,
+            type: "POST",
+            data: { ids: ids }
+        }).done(function (data) {
+        });
+    }

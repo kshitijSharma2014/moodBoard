@@ -1,0 +1,272 @@
+﻿
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@model networkaccess.Areas.Admin.Models.ManageClaimsViewModel
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+
+<body>
+    <style>
+
+        .chk_Jobcodes_all {
+        }
+        .chk_Jobcode {
+        }
+
+        /*.chk_ProjectName {
+        }
+
+        .chk_LayerName {
+        }
+
+        .chk_Layers_all {
+        }
+
+        .chk_Projects_all {
+        }*/
+    </style>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        //$(document).ready(function () {
+        //    $.ajax({
+        //        url: "/ClaimManagementAccess/GetClaimDataJSON",
+        //        type: "GET",
+        //        contentType: "application/json; charset=utf-8",
+        //        datatype: JSON,
+        //        success: function (result) {
+        //            $(result).each(function () {
+        //                $("#ClaimData").append($("<option></option>").val(this.Attr).html());
+        //            });
+        //        },
+        //        error: function (data) { }
+        //    });
+        //});
+        $(function () {
+
+            //$('#downloadcsvpdetails').click(function () {
+            //    var d = new Date();
+            //    var strDate = d.getFullYear() + "/" + (d.getMonth() + 1) + "/" + d.getDate();
+            //    $('a').attr('href', "downloadProcessSummaryCSV?report_date=" + strDate);
+            //})
+
+
+            $('#dvProjects, #dvLayers').click(function () {
+                $('#dvProjects, #dvLayers').removeClass('chosen-container-active chosen-with-drop');
+                $(this).addClass('chosen-container-active chosen-with-drop').find('ul.chosen-choices li.search-field input[type="text"]').focus();
+            });
+            $(document).bind('click', function (e) {
+                if (!$(e.target).parents().hasClass("chosen-container-active")) {
+                    $('#dvProjects, #dvLayers').removeClass('chosen-container-active chosen-with-drop');
+                    $('li.search-field input[type="text"]').val('');
+                    $('li.active-result').removeClass('hide');
+                }
+            });
+
+            $('input.chk_Jobcodes_all:checkbox').on('change', function () {
+                $('#dvLayers ul.chosen-results li').not(".hide").find('input.chk_Jobcode:checkbox').prop('checked', $(this).is(":checked"));
+            });
+
+            $('input.chk_Jobcodes_all:checkbox').on('change', function () {
+                $('#dvProjects ul.chosen-results li').not(".hide").find('input.chk_Jobcode:checkbox').prop('checked', $(this).is(":checked"));
+            });
+
+            $('input.chk_Jobcode:checkbox').on('change', function () {
+                var cntAll = $("input.chk_Jobcode:checkbox").length;
+                var cntChecked = $("input.chk_Jobcode:checkbox:checked").length;
+                $(".chk_Jobcodes_all[type='checkbox']").prop("checked", (cntAll == cntChecked));
+            });
+
+            $('input.chk_Jobcode:checkbox').on('change', function () {
+                var cntAll = $("input.chk_Jobcode:checkbox").length;
+                var cntChecked = $("input.chk_Jobcode:checkbox:checked").length;
+                $(".chk_Layers_all[type='checkbox']").prop("checked", (cntAll == cntChecked));
+            });
+
+            //snSetDefaultActionStatus();
+        });
+
+        function fnSearchLayers(searchText) {
+            var searchText = $.trim(searchText).toLowerCase();
+            if (searchText.length > 1) {
+                var records = $('#dvLayers li.active-result:not(#liSelectAllLayers)');
+                $.each(records, function (idx, elem) {
+                    if ($(this).text().toLowerCase().indexOf(searchText) > -1) {
+                        $(this).removeClass('hide');
+                    }
+                    else {
+                        $(this).addClass('hide');
+                    }
+                });
+            }
+            else {
+                $('#dvLayers li.active-result').removeClass('hide');
+            }
+        }
+
+    </script>
+    <div class="m-b-md">
+        <h3 class="m-b-none">Claim Management Access</h3>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index","Dashboard")"><i class="fa fa-home"></i> Home</a>
+                </li>
+                <li class="active">Claim Management Access</li>
+            </ul>
+        </div>
+        <div class="col-lg-12" id="dvPageMessage">
+            @Html.Partial("_PageMessage")
+        </div>
+    </div>
+    <section class="panel panel-default">
+        <div class="panel-body">
+            @using (Html.BeginForm("ManageProjectLayers", "LayerSettings", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+                @Html.Hidden("hdnActionType", new { id = "hdnActionType", value = "" })
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @*<div class="form-group">
+                    <label class="col-sm-2 control-label">Action Type *</label>
+                    <div class="col-sm-10">
+                        @Html.DropDownList("ActionType", new List<SelectListItem>{
+                    new SelectListItem{ Text="Add Layers", Value = "add" },
+                    new SelectListItem{ Text="Remove Layers", Value = "remove" },
+                 }, "Select Type", new { @class = "form-control", onchange = "onChangeActionType(this.value);" })
+                    </div>
+                </div>*@
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Job Code: *</label>
+                    <div class="col-sm-10">
+                        <div id="dvProjects" class="chosen-container chosen-container-multi" style="width: 50%;" title="">
+                            <ul class="chosen-choices">
+                                <li class="search-field">
+                                    <input type="text" onkeyup="fnSearchProjects(this.value);" maxlength="50" autocomplete="off" placeholder="Select Job Codes" class="" style="width: 260px;" />
+                                </li>
+                            </ul>
+                            <div class="chosen-drop">
+                                <ul class="chosen-results">
+                                    <li class="active-result highlighted" id="liSelectAllProjects"><input type="checkbox" class="chk_Jobcodes_all" /><strong>Select All</strong></li>
+                                    @foreach (var item in Model.jobcodes.jobcodes)
+                                    {
+                                        <li class="active-result"><input type="checkbox" class="chk_Jobcode" value="@item.jobcode" /> @item.jobcode</li>
+                                        
+                                        @*@foreach (var item2 in item)
+                                        {
+                                        <li class="active-result"><input type="checkbox" class="chk_Jobcode" value="@item." /> @item.jobcode</li>
+                                        }*@
+                                    }
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Job Type: *</label>
+                    <div class="col-sm-10">
+                        <div id="dvLayers" class="chosen-container chosen-container-multi" style="width: 100%;" title="">
+                            <ul class="chosen-choices">
+                                <li class="search-field">
+                                    <input type="text" onkeyup="fnSearchLayers(this.value);" maxlength="50" autocomplete="off" placeholder="Select Job Types" class="" style="width: 260px;" />
+                                </li>
+                            </ul>
+                            <div class="chosen-drop">
+                                <ul class="chosen-results">
+                                    <li class="active-result highlighted" id="liSelectAllLayers" style="display:block;"><input type="checkbox" class="chk_Layers_all" /><strong>Select All</strong></li>
+                                    @foreach (var item in Model.jobcodes.jobtypes)
+                                    {
+                                        <li class="active-result"><input type="checkbox" class="chk_LayerName" value="@item.jobtype" /> @item.jobtype</li>
+                                    }
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="col-sm-2 control-label">Job Family: *</label>
+                    <div class="col-sm-10">
+                        <div id="dvJobFamily" class="chosen-container chosen-container-multi" style="width: 10%;" title="">
+                            <ul class="chosen-choices">
+                                <li class="search-field">
+                                    <input type="text" onkeyup="fnSearchLayers(this.value);" maxlength="50" autocomplete="off" placeholder="Select Job Family" class="" style="width: 260px;" />
+                                </li>
+                            </ul>
+                            <div class="chosen-drop">
+                                <ul class="chosen-results">
+                                    <li class="active-result highlighted" id="liSelectAllJobFamily" style="display:block;"><input type="checkbox" class="chk_Family_all" /><strong>Select All</strong></li>
+                                    @foreach (var item in Model.jobcodes.jobfamilies)
+                                    {
+                                        <li class="active-result"><input type="checkbox" class="chk_LayerName" value="@item.jobfamily" /> @item.jobfamily</li>
+                                    }
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div id="dvProgressStatus" style="display:none">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Process Running Status</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">
+                                <div class="progress progress-sm progress-striped active" style="width:70%">
+                                    <div class="progress-bar bg-info lter" data-toggle="tooltip" data-original-title="The process has been initiated. Please wait until the current process is finished." style="width: 100%; background-color: #428bca;"></div>
+                                </div>
+                                <span style="color: #a94442;">The process has been initiated. Please wait until the current process is finished.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <a href="javascript:void(0)" id="lnkSubmit" class="btn btn-primary disabled" title="Click here to execute process for selected action type." onclick="ValidateLayers();">Execute</a>
+                        <a href="@Url.Action("ManageProjectLayers")" class="btn btn-default" title="Refresh"><i class="fa fa-refresh"></i> </a>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-id-1"></label>
+                    <div class="col-sm-10"><strong>Note: </strong>Claim Management Access.</div>
+                </div>
+                <div class="form-group ">
+                    <label class="col-sm-2 control-label" for="input-id-1"></label>
+                    <div class="col-sm-10" id="summarydetails">
+                        @*<table>
+                                <thead><tr>Percentage Complition</tr><tr>Total Count</tr><tr>Total Complete</tr><tr>Total Failed</tr></thead>
+                                <tbody><tr><td></td><td></td><td></td><td></td></tr></tbody>
+                            </table>*@
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+    <div> 
+        @Html.DropDownList("MySkills", new List<SelectListItem>
+{
+   new SelectListItem{ Text="ASP.NET MVC", Value = "1" },
+   new SelectListItem{ Text="ASP.NET WEB API", Value = "2" },
+   new SelectListItem{ Text="ENTITY FRAMEWORK", Value = "3" },
+   new SelectListItem{ Text="DOCUSIGN", Value = "4" },
+   new SelectListItem{ Text="ORCHARD CMS", Value = "5" },
+   new SelectListItem{ Text="JQUERY", Value = "6" },
+   new SelectListItem{ Text="ZENDESK", Value = "7" },
+   new SelectListItem{ Text="LINQ", Value = "8" },
+   new SelectListItem{ Text="C#", Value = "9" },
+   new SelectListItem{ Text="GOOGLE ANALYTICS", Value = "10" },
+})
+
+
+
+        @Html.DropDownList("ClaimData", new SelectList(Enumerable.Empty
+        <SelectListItem>()))
+    </div>
+</body>
+</html>
