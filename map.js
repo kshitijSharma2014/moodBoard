@@ -15,13 +15,13 @@ class Map extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state= {
+    this.state = {
       currPosition: null,
     }
     const that = this;
     this.setCurrLoc = this.setCurrLoc.bind(this);
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.setCurrLoc, function() {
+      navigator.geolocation.getCurrentPosition(this.setCurrLoc, function () {
         //this.handleLocationError(true, infoWindow, this.map.getCenter());
       });
     } else {
@@ -30,22 +30,37 @@ class Map extends React.Component {
     }
   }
 
-  setCurrLoc= (position) => {
-      const currPosition = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-      console.log(currPosition);
-      this.setState({currPosition: currPosition})
-      debugger;
+  setCurrLoc = (position) => {
+    const currPosition = {
+      lat: position.coords.latitude,
+      lng: position.coords.longitude
+    };
+    console.log(currPosition);
+    this.setState({ currPosition: currPosition })
+    debugger;
   }
-  onMapLoad = (map,position) => {
+
+  onMapLoad = (map, position) => {
     const marker = new window.google.maps.Marker({
       position: position,
       map: map,
-      title: 'Hello Istanbul!'
+      draggable: true,
+      animation: true,
+      title: 'My Location'
     });
+    marker.addListener('dragend', this.handleDragEndEvent);
     this.props.setPosition(position);
+  }
+
+  handleDragEndEvent = (event) => {
+    console.log('latitude: ', event.latLng.lat());
+    console.log('longitued: ', event.latLng.lng());
+    const newPosition = {
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng()
+    }
+    this.props.setPosition(newPosition);
+    this.setState({ currPosition: newPosition })
   }
 
   onScriptLoad = () => {
@@ -61,8 +76,10 @@ class Map extends React.Component {
     debugger;
     const option = {
       center: position,
-      zoom: 18,
-      draggable:true
+      zoom: 15,
+      streetViewControl: false,
+      fullscreenControl: false,
+      mapTypeControl: false
     };
     this.map = new window.google.maps.Map(
       document.getElementById('newMap'), option);
@@ -118,19 +135,19 @@ class Map extends React.Component {
   handleLocationError = (browserHasGeolocation, infoWindow, pos) => {
     infoWindow.setPosition(pos);
     infoWindow.setContent(browserHasGeolocation ?
-                          'Error: The Geolocation service failed.' :
-                          'Error: Your browser doesn\'t support geolocation.');
+      'Error: The Geolocation service failed.' :
+      'Error: Your browser doesn\'t support geolocation.');
     infoWindow.open(this.map);
   }
 
 
   render() {
     const props = this.props;
-    return(
+    return (
       <div style={{ width: '100%', height: '100%' }}>
         <div style={{ width: '100%', height: '100%' }} id="newMap"></div>
-      <img src={require("./marker.svg")} onClick={this.setCurrentLocation} className="markerSvg pa" />
-  </div>
+        <img src={require("./marker.svg")} onClick={this.setCurrentLocation} className="markerSvg pa" />
+      </div>
     )
   }
 }
