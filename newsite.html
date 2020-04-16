@@ -1,0 +1,161 @@
+@{
+Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Areas/Admin/css/plm.css" rel="stylesheet" />
+<link href="~/Areas/Admin/js/chosen/chosen.css" rel="stylesheet" />
+<script src="~/Areas/Admin/js/chosen/chosen.jquery.min.js"></script>
+<div class="m-b-md">
+    <h3 class="m-b-none">Site Locator </h3>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <ul class="breadcrumb">
+            <li>
+                <a href="@Url.Action(" Index","Dashboard")"><i class="fa fa-home"></i> Home</a>
+            </li>
+            <li>
+                <a href="@Url.Action(" Index", "PLM" )"><i class="fa fa-building"></i> Site Locator </a>
+            </li>
+            <li class="active">Manage Data</li>
+        </ul>
+    </div>
+    <div class="col-lg-12" id="dvPageMessage">
+        @Html.Partial("_PageMessage")
+    </div>
+</div>
+<div id="DivLoadingNew" style="display: none; margin-left: 40%; margin-top: auto; ">
+    <div id="DivProgress" style="left:50%;">
+        <img alt="Loading..." src="~/Content/images/fancybox_loading.gif" class="loadingImg"
+            style="float: left; width: 26px; margin-right: 3px; ">
+        <p style=" padding-top: 4px;">Loading...</p>
+    </div>
+</div>
+
+<div class="modal" id="importFileModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Import New File</h5>
+                <button type="button" class="close closeImportFleModal" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div style="display: flex;width:100%;justify-content: space-between;align-items: center;">
+                        <button id="dwldTemplate" class="btn btn-info"
+                            style="margin-left: 12px;font-size: 12px;padding: 2px 3px;height: 30px;">Download Template
+                        </button>
+                    </div>
+                    <p class="lead" style="font-size : 16px">Select file for processing.</p>
+
+                    <div style="margin-top: 10px; font-family: helvetica neue, helvetica, arial, sans-serif;">
+
+                        <div>
+                            <input type="file" name="fileimport" id="fileimport">
+                            <!-- <button class="btn btn-primary" id="btnFileImport" style="margin-top:8px;"
+                                value="Upload">Upload</button> -->
+                        </div>
+
+                    </div>
+                    <!-- <div id="importFileMsg" style="visibility:hidden;font-size:12px;margin-top:8px;"></div> -->
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary closeUpdateFleModal" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btnFileImport">Import</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="updateFileModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Update Imported Data</h5>
+                <button type="button" class="close closeUpdateFleModal" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <p class="lead" style="font-size : 16px">Select file for processing.</p>
+
+                    <button id="dwldFileToUpdate" class="btn btn-primary"
+                        style="margin-left: 12px;font-size: 12px;padding: 2px 3px;height: 30px;">Download Original File
+                    </button>
+                </div>
+                <div style="margin-top: 10px; font-family: helvetica neue, helvetica, arial, sans-serif;">
+                    <div>
+                        <input type="file" name="fileimport" id="fileupdate">
+                        <!-- <button class="btn btn-primary" id="btnFileUpdate" style="margin-top:8px;"
+                            value="Upload">Upload</button> -->
+                    </div>
+
+                </div>
+                <!-- <div id="updateFileMsg" style="visibility:hidden;font-size:12px;margin-top:8px;"></div> -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary closeUpdateFleModal" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btnFileUpdate">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="jumbotron jumbotron-fluid" style="padding-top: 8px;padding-bottom: 12px;">
+    <div class="container">
+        <div style="display:flex; align-items: baseline;">
+            <h1 class="display-4" style="font-size : 20px">Process Data</h1>
+            <img src="/Areas/Admin/images/refresh.png" data-toggle="tooltip" data-original-title="Refresh"
+                class="exportTblRefresh" style="width: 20px; height:20px; margin-left:12px;  cursor:pointer;" />
+        </div>
+        <table id="exportTable" class="table table-striped table-light m-l-4"
+            style="width: 800px; color: black; font-size: 12px; margin-bottom: 0;">
+            <thead>
+                <tr>
+                    <th>Sr No.</th>
+                    <th>File Name</th>
+                    <th>Total Sites</th>
+                    <th>SMS Sent</th>
+                    <th>Sites Verified</th>
+                    <th>Sites Not Verified</th>
+                    <th>Uploaded By</th>
+                    <th>Uploaded On</th>
+                    <th>Last Exported By</th>
+                    <th>Last Exported On</th>
+                    <th>Updated By</th>
+                    <th>Updated On</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+    </div>
+    <div id="snoAlertBox" class="alert alert-success" data-alert="alert"></div>
+
+    <div class="pa confirmationBoxContainer" id="deleteConfirmation">
+        <div class="df fc">
+            <div class="titleContainer">
+                <button class="bootbox-close-button close" onclick="closeConfirmationBox()" type="button">◊</button>
+                <div class="bootbox-body">Are you sure?</div>
+            </div>
+            <div class="boxbtnGrp df">
+                <button class="btn btn-secondary cancelBtn" onclick="closeConfirmationBox()">Cancel</button>
+                <button class="btn btn-danger danger" onclick="deleteFileApi()">OK</button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" charset="utf8"
+    src="http://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="~/Areas/Admin/js/plm/exportFileList.js"></script>
+<script src="~/Areas/Admin/js/plm/plmscripts.js"></script>
