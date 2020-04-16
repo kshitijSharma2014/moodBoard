@@ -1,0 +1,86 @@
+.confirmationBoxContainer {
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.3rem;
+    width: 30%;
+    height: 130px;
+    z-index: 2;
+    left: 35%;
+}
+
+    @media only screen and (max-width:1000px) {
+        /* For mobile phones: */
+        .confirmationBoxContainer {
+            width: 35% !important;
+            left: 32.5% !important;
+        }    
+        }
+
+
+    @media only screen and (max-width:800px) {
+        /* For mobile phones: */
+        .confirmationBoxContainer {
+            width: 50% !important;
+            left: 30% !important;
+        }    
+        }
+
+     
+
+    @media only screen and (max-width:500px) {
+        /* For mobile phones: */
+        .confirmationBoxContainer {
+            width: 70% !important;
+            left: 15% !important;
+        }    
+    }
+
+    .boxbtnGrp {
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px;
+    border-top: 1px solid #e9ecef;
+    }
+
+    .close {
+        float: right;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1;
+        color: #000;
+        text-shadow: none;
+        opacity: .5;
+        cursor: pointer;
+    }
+
+    .titleContainer {
+        height: 30px;
+    padding: 20px;
+    color: grey;
+    }
+
+
+.primary {
+    color: #fff;
+    background-color: #50a1ff !important;
+    border-color: #50a1ff !important;
+}
+
+.primary:hover {
+    color: #fff;
+    background-color: #3c96ff;
+    border-color: #3c96ff;
+    -webkit-box-shadow: 0 1px 10px rgba(80, 161, 255, 0.4);
+    box-shadow: 0 1px 10px rgba(80, 161, 255, 0.4);
+}
+
+.cancelBtn {
+    margin-right: 4px;
+}
+
+.danger {
+    color: #85262c;
+    background-color: #ffdbdd;
+    border-color: #ffcccf;
+}

@@ -1,0 +1,6 @@
+{
+    "name": "ConfirmationBox",
+    "main": "./ConfirmationBox.js",
+    "private": true
+  }
+  
