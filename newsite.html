@@ -159,3 +159,26 @@ Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     src="http://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script src="~/Areas/Admin/js/plm/exportFileList.js"></script>
 <script src="~/Areas/Admin/js/plm/plmscripts.js"></script>
+
+
+
+var updateFileData;
+
+$('#rWAListTable').on('click', 'tbody .rowEditbtn', function () {
+    updateFileData = expTable.row($(this).closest('tr')).data();
+    $('#updateFileModal').show();
+})
+
+function hideUpdateFileModal() {
+    $('#updateFileModal').hide();
+}
+
+$('#importNewFilebtn').on('click', function() {
+    $('#importFileModal').show();
+})
+
+
+function hideImportFileModal() {
+    $('#importFileModal').hide();
+}
+
