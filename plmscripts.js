@@ -28,16 +28,22 @@ Upload.prototype.doUpload = function (url) {
         type: "POST",
         url: url, //"/PLM/UploadFile",
         processData: false,
-        success: function (data) {
+         success: function (data) {
             if (data.data != null) {
                 DownloadFeedbackFile(data);
                 msg = 'File not imported. Check feedback report for error.';
+                $("#snoAlertBox").empty();
+                $("#snoAlertBox").fadeIn();
                 $('<p style="font-size:12px">File not imported. Check feedback report for error.</p>').appendTo('#' + msgid);
+                closeSnoAlertBox();
                 //$("#" + msgid).css({ "visibility": "visible", "color": "red" });
             }
             else {
                 msg = data.result;
+                $("#snoAlertBox").empty();
+                $("#snoAlertBox").fadeIn();
                 $('<p style="font-size:12px">' + msg + '</p>').appendTo('#' + msgid);
+                closeSnoAlertBox();
                // $("#" + msgid).css({ "visibility": "visible", "color": "blue" });
                 exportTableCounter = 0;
                 expTable.ajax.reload();
