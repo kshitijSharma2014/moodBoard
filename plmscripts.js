@@ -28,14 +28,14 @@ Upload.prototype.doUpload = function (url) {
         type: "POST",
         url: url, //"/PLM/UploadFile",
         processData: false,
-         success: function (data) {
+        success: function (data) {
             if (data.data != null) {
                 DownloadFeedbackFile(data);
                 msg = 'File not imported. Check feedback report for error.';
-                $("#snoAlertBox").empty();
-                $("#snoAlertBox").fadeIn();
-                $('<p style="font-size:12px">File not imported. Check feedback report for error.</p>').appendTo('#' + msgid);
-                closeSnoAlertBox();
+                $("#snoAlertDangerBox").empty();
+                $("#snoAlertDangerBox").fadeIn();
+                $('<p style="font-size:12px">File not imported. Check feedback report for error.</p>').appendTo('#snoAlertDangerBox');
+                closeSnoDangerAlertBox();
                 //$("#" + msgid).css({ "visibility": "visible", "color": "red" });
             }
             else {
@@ -48,14 +48,13 @@ Upload.prototype.doUpload = function (url) {
                 exportTableCounter = 0;
                 expTable.ajax.reload();
             }
-            hideImportFileModal();
         },
         error: function (error) {
             console.log("error");
-            $("#snoAlertBox").empty();
-            $("#snoAlertBox").fadeIn();
-            $('<p style="font-size:12px">API failed.</p>').appendTo('#snoAlertBox');
-            closeSnoAlertBox();
+            $("#snoAlertDangerBox").empty();
+            $("#snoAlertDangerBox").fadeIn();
+            $('<p style="font-size:12px">API failed.</p>').appendTo('#snoAlertDangerBox');
+            closeSnoDangerAlertBox();
             // handle error
         },
         async: true,
@@ -89,13 +88,15 @@ $("#fileimport").on("change", function (e) {
 });
 $("#fileimport").on("click", function (e) {
    // $("#importFileMsg").empty();    
-    $("#snoAlertBox").empty();    
+   // $("#snoAlertBox").empty();    
 });
 
 
 //Change id to your id
 $("#btnFileImport").on("click", function (e) {
     upload.doUpload("/PLM/UploadFile", 'importFileMsg');
+    hideImportFileModal();
+    $('fileimport').val('')
     exportTableCounter = 0;
     expTable.ajax.reload();
 });
@@ -115,6 +116,8 @@ $("#fileupdate").on("click", function (e) {
 //Change id to your id
 $("#btnFileUpdate").on("click", function (e) {
     update.doUpload("/PLM/UploadModifiedFile", 'updateFileMsg');
+    hideUpdateFileModal();
+    $('fileupdate').val('');
     exportTableCounter = 0;
     expTable.ajax.reload();
 });
