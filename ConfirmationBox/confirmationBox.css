@@ -9,57 +9,53 @@
     left: 35%;
 }
 
-    @media only screen and (max-width:1000px) {
-        /* For mobile phones: */
-        .confirmationBoxContainer {
-            width: 35% !important;
-            left: 32.5% !important;
-        }    
-        }
-
-
-    @media only screen and (max-width:800px) {
-        /* For mobile phones: */
-        .confirmationBoxContainer {
-            width: 50% !important;
-            left: 30% !important;
-        }    
-        }
-
-     
-
-    @media only screen and (max-width:500px) {
-        /* For mobile phones: */
-        .confirmationBoxContainer {
-            width: 70% !important;
-            left: 15% !important;
-        }    
+@media only screen and (max-width:1000px) {
+    /* For mobile phones: */
+    .confirmationBoxContainer {
+        width: 35% !important;
+        left: 32.5% !important;
     }
+}
 
-    .boxbtnGrp {
+@media only screen and (max-width:800px) {
+    /* For mobile phones: */
+    .confirmationBoxContainer {
+        width: 50% !important;
+        left: 30% !important;
+    }
+}
+
+@media only screen and (max-width:500px) {
+    /* For mobile phones: */
+    .confirmationBoxContainer {
+        width: 70% !important;
+        left: 15% !important;
+    }
+}
+
+.boxbtnGrp {
     align-items: center;
     justify-content: flex-end;
     padding: 10px;
     border-top: 1px solid #e9ecef;
-    }
+}
 
-    .close {
-        float: right;
-        font-size: 14px;
-        font-weight: 600;
-        line-height: 1;
-        color: #000;
-        text-shadow: none;
-        opacity: .5;
-        cursor: pointer;
-    }
+.close {
+    float: right;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    color: #000;
+    text-shadow: none;
+    opacity: .5;
+    cursor: pointer;
+}
 
-    .titleContainer {
-        height: 30px;
+.titleContainer {
+    height: 30px;
     padding: 20px;
     color: grey;
-    }
-
+}
 
 .primary {
     color: #fff;

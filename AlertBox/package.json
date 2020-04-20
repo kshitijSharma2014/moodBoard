@@ -1,0 +1,6 @@
+{
+    "name": "AlertBox",
+    "main": "./AlertBox.js",
+    "private": true
+  }
+  
