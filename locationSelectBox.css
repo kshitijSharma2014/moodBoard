@@ -1,0 +1,45 @@
+.selectBoxContainer {
+    width: 600px;
+    z-index: 2;
+}
+
+@media only screen and (max-width:800px) {
+    /* For tablets: */
+    .selectBoxContainer {
+        width: 400px;
+        z-index: 2;
+    }
+}
+
+@media only screen and (max-width:550px) {
+    /* For tablets: */
+    .selectBoxContainer {
+        width: 330px;
+        z-index: 2;
+    }
+}
+
+@media only screen and (max-width:450px) {
+    /* For mobile phones: */
+    .selectBoxContainer {
+        width: 220px;
+        z-index: 2;
+    }
+}
+
+.verifySvg {
+    height: 14px;
+}
+
+.verifiedIcon {
+    margin-left: 4px;
+    margin-right: 12px;
+}
+
+.locationLabel {
+    font-size: 14px;
+}
+
+.formatOption {
+    display: flex;
+}
