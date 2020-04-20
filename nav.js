@@ -30,30 +30,22 @@ class NavigationBar extends React.PureComponent {
       }
     }
 
-    const config = {
-      headers: {
-        datatype: 'json',
-        contentType: 'application/json',
-        charset: 'utf-8'
-      }
-    }
     this.toggleConfirmationBox();
-    $.post("http://localhost:53400/api/plm/VerifyPLMUserLoc", payload, function (res) {     
-      console.log(res);
-      console.log(res.data);
-      this.setState({
-        showAlertBox: true,
-        AlertText: 'Site verification Successfull!!',
-        alertType: 'success',
-      })
-    })
-    .fail(() => {
-      this.setState({
-        showAlertBox: true,
-        AlertText: 'Site verification failed!!',
-        alertType: 'failure',
-      })
-    })
+    const that = this;
+    $.post("http://localhost:53400/api/plm/VerifyPLMUserLoc", payload, function (res) { 
+      that.setState({         
+        showAlertBox: true,         
+        AlertText: 'Site verification Successfull!!',         
+        alertType: 'success',       
+      })             
+    });
+    // .fail(() => {
+    //   that.setState({
+    //     showAlertBox: true,
+    //     AlertText: 'Site verification failed!!',
+    //     alertType: 'failure',
+    //   })
+    // })
     // axios.post('https://jiobeatplanner.st.ril.com:8082/api/plm/VerifyPLMUserLoc', payload, config)
     //   .then(res => {
     //     console.log(res);
