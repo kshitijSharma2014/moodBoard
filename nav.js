@@ -39,11 +39,21 @@ class NavigationBar extends React.PureComponent {
   }
 
   updateSites = (verifiedSite) => {
-    const newState = Object.assign({}, this.state.sites);
-    const verifiedSiteIndex = _findIndex(newState, function(site) { return site.value === verifiedSite.value; })
-    if (verifiedSiteIndex) {
-      newState[verifiedSiteIndex].verified = true;
-    }
+    //const newState = Object.assign({}, this.state.sites);
+   // const verifiedSiteIndex = _findIndex(newState, function(site) { return site.value === verifiedSite.value; })
+    debugger
+    const newState = _map(this.state.sites, (site)=> {
+      if (site.value === verifiedSite.value) {
+        debugger
+        return {
+          value: site.siteid,
+          label: site.type,
+          verified: true,
+        }
+      }
+      return site;
+    });
+    debugger
     this.setState({sites: newState})
   }
 
