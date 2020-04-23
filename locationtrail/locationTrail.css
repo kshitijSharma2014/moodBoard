@@ -1,0 +1,264 @@
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    margin-bottom: 0;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #2196F3;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #2196F3;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+}
+
+.df {
+    display: flex;
+}
+
+.fc {
+    flex-direction: column;
+}
+
+.title {
+    font-size: 16px;
+    border-bottom: 1px solid #a7a7a7;
+    text-align: center;
+}
+
+.subTitle {
+    font-size: 14px;
+    border-bottom: 1px solid #c4c4c4;
+    text-align: center;
+    color: #6b6b6b;
+    margin: 0 8px;
+}
+
+.locationTrailContainer {
+    height: 500px;
+    width: 250px;
+    border: 1px solid #c4c4c4;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.resetMap {
+    width: 16px;
+    height: 16px;
+    float: right;
+    margin-right: 4px;
+    margin-top: 4px;
+    cursor: pointer;
+}
+
+.empSearchBox {
+    width: 240px;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.radio-group label {
+    overflow: hidden;
+}
+
+.radio-group input {
+    /* This is on purpose for accessibility. Using display: hidden is evil.
+     This makes things keyboard friendly right out tha box! */
+    height: 1px;
+    width: 1px;
+    position: absolute;
+    top: -20px;
+}
+
+.radio-group .not-active {
+    color: #3276b1;
+    background-color: #fff;
+}
+
+.mapSwitch {
+    justify-content: space-around;
+    align-items: center;
+    width: 90%;
+    margin-top: 4px;
+    margin-left: 12px;
+    border: 1px solid #c4c4c4;
+    padding: 5px 20px;
+    border-radius: 4px;
+}
+
+.mapSwitchTitle {
+    color: #323232;
+    font-size: 12px;
+    line-height: 20px;
+}
+
+.routeOptions {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 10px 4px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    cursor: pointer;
+    width: 100px;
+}
+
+.routeOptionsContainer {
+    justify-content: space-around;
+    width: 85%;
+    margin-left: 18px;
+    margin-top: 8px;
+}
+
+.routeOptions:active {
+    background-color: #085b9c;
+}
+
+.clusterMapContainer {
+    border-bottom: 1px solid #c4c4c4;
+    border-top: 1px solid #c4c4c4;
+    margin: 0 8px;
+    font-size: 12px;
+    line-height: 24px;
+}
+
+.heatMapContainer {
+    border-bottom: 1px solid #c4c4c4;
+    border-top: 1px solid #c4c4c4;
+    margin: 0 8px;
+    font-size: 12px;
+    line-height: 24px;
+}
+
+.employeeTypeContainer {
+    border-bottom: 1px solid #c4c4c4;
+    margin: 0 8px;
+    font-size: 12px;
+    padding: 4px 0;
+}
+
+.empOptions {
+    line-height: 24px;
+}
+
+.empColor {
+    height: 10px;
+    width: 10px;
+    background: #e93d3d;
+    margin-top: 7px;
+    margin-left: 5px;
+}
+
+.alignItemsBaseline {
+    align-items: baseline;
+}
+
+.densityLabelColorBox {
+    height: 10px;
+    width: 10px;
+    margin-top: 7px;
+}
+
+.highDensity {
+    background-color: #e93d3d;
+}
+
+.mediumDensity {
+    background-color: #2196F3;
+    margin-left: 5px;;
+}
+
+.lowDensity {
+    background-color: green;
+    margin-left: 5px;
+}
+
+.DensityTypeLabel {
+    font-size: 12px;
+    margin-left: 4px;
+}
+
+.nonEmpColor {
+    height: 10px;
+    width: 10px;
+    background: #085b9c;
+    margin-top: 7px;
+    margin-left: 5px;
+}
+
+.ptb4 {
+    padding: 4px 0;
+}
+
+.opacityLabel {
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.locationTrailNav {
+    border-bottom: 1px solid #c4c4c4;
+    height: 25px;
+}
+
+.locationTrailNavTitleContainer {
+    width: 50%;
+    border-right: 1px solid #c4c4c4;
+    height: 25px;
+}
+
+.locationTrailNavTitle {
+    text-align: center;
+    font-size: 12px;
+    height: 25px;
+    line-height: 25px;
+    cursor: pointer;
+}
+
+.nav_active {
+    background-color: #ff4242;
+    color: white;
+}
+
+.boldFont {
+    font-weight: 600;
+}

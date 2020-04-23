@@ -1,0 +1,142 @@
+<html>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+<script src="./locationTrail.js"></script>
+<link href="./locationTrail.css" rel="stylesheet" />
+<link href="./slider.css" rel="stylesheet" />
+
+<body>
+    <div class="locationTrailContainer">
+        <div class="locationTrailNav df">
+            <div class="locationTrailNavTitleContainer">
+                <div class="locationTrailNavTitle nav_active" id="allTab" onclick="onTabClick(event)">All</div>
+            </div>
+            <div class="locationTrailNavTitleContainer">
+                <div class="locationTrailNavTitle" id="specificTab" onclick="onTabClick(event)">Specific</div>
+            </div>
+        </div>
+        <div class="all" id="allTabContent">
+            <div style="margin-top: 4px;text-align: center;">
+                <label style="font-size: 12px;" for="date">Date:</label>
+                <input style="font-size: 12px" type="date" id="date" name="date">
+            </div>
+            <div class="ptb4">
+                <div class="custom-control custom-checkbox clusterMapContainer">
+                    <input type="checkbox" class="custom-control-input" id="clusterMap">
+                    <label class="custom-control-label boldFont" for="clusterMap">Cluster Map</label>
+                </div>
+            </div>
+
+            <div class="employeeTypeContainer">
+                <div class="custom-control custom-checkbox empOptions">
+                    <input type="checkbox" class="custom-control-input" id="empCountcm">
+                    <label class="custom-control-label df" for="empCountcm">Employees (count)<div class="empColor">
+                        </div>
+                    </label>
+                </div>
+                <div class="custom-control custom-checkbox empOptions">
+                    <input type="checkbox" class="custom-control-input" id="nonEmpCountcm">
+                    <label class="custom-control-label df" for="nonEmpCountcm">Non Employees (Count)<div
+                            class="nonEmpColor"></div></label>
+                </div>
+            </div>
+
+
+
+
+            <div class="ptb4" style="margin-top: 25px;">
+                <div class="custom-control custom-checkbox heatMapContainer">
+                    <input type="checkbox" class="custom-control-input" id="heatMap">
+                    <label class="custom-control-label boldFont" for="heatMap">Heat Map</label>
+                </div>
+            </div>
+            <div class="employeeTypeContainer">
+                <div class="custom-control custom-checkbox empOptions">
+                    <input type="checkbox" class="custom-control-input" id="empCounthm">
+                    <label class="custom-control-label df" for="empCounthm">Employees (count)<div class="empColor">
+                        </div>
+                    </label>
+                </div>
+                <div class="custom-control custom-checkbox empOptions">
+                    <input type="checkbox" class="custom-control-input" id="nonEmpCounthm">
+                    <label class="custom-control-label df" for="nonEmpCounthm">Non Employees (Count)<div
+                            class="nonEmpColor"></div></label>
+                </div>
+                <div class="opacityLabel">Opacity: </div>
+                <div class="range-slider">
+                    <input class="range-slider__range" type="range" value="0" min="0" max="100" style="height: 5px;">
+                    <span class="range-slider__value">0</span>
+                </div>
+                <div class="opacityLabel">Density Label: </div>
+                <div class="df">
+                    <div class="df alignItemsBaseline">
+                        <div class="densityLabelColorBox highDensity"></div>
+                        <div class="DensityTypeLabel">High</div>
+                    </div>
+                    <div class="df alignItemsBaseline">
+                        <div class="densityLabelColorBox mediumDensity"></div>
+                        <div class="DensityTypeLabel">Medium</div>
+                    </div>
+                    <div class="df alignItemsBaseline">
+                        <div class="densityLabelColorBox lowDensity"></div>
+                        <div class="DensityTypeLabel">Low</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <div class=" specific" id="specificTabContent" style="display: none;">
+
+            <div style="margin-top: 4px;text-align: center;">
+                <label style="font-size: 12px;" for="date">Date:</label>
+                <input style="font-size: 12px" type="date" id="date" name="date">
+            </div>
+
+            <div class="form-group" style="margin-top: 4px;width: 100%;">
+                <input type="text" class="form-control empSearchBox" placeholder="Search Employee/Non Employee">
+            </div>
+
+            <div class="subTitle">Navigation and Current Location</div>
+            <div class="df mapSwitch">
+                <div class="mapSwitchTitle" value="aerial" id="chkaerial">Areal</div>
+                <label class="switch">
+                    <input id="radio" type="checkbox">
+                    <span class="slider"></span>
+                </label>
+                <div class="mapSwitchTitle" value="along the road" id="chkalongtheroad">Along the road</div>
+            </div>
+            <div class="df routeOptionsContainer">
+                <div class="routeOptions">
+                    Start Animation
+                </div>
+                <div class="routeOptions">
+                    Clear Route
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    rangeSlider();
+    $('[data-toggle="tooltip"]').tooltip()
+</script>
+
+</html>
