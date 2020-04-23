@@ -4,3 +4,11 @@
     "private": true
   }
   
+
+<ConfirmationBox
+          buttonType='primary'
+          confirmBtnClick={this.verifySelectedLocation}
+          closeConfirmationBox={this.toggleConfirmationBox}
+          selectedLocation={this.state.selectedLocation}
+          position={_get(this, 'props.position')}
+        />
