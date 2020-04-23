@@ -12,3 +12,23 @@
           selectedLocation={this.state.selectedLocation}
           position={_get(this, 'props.position')}
         />
+
+                   
+Index.css
+                    
+.app-footer {
+  height: 20px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 20px;
+  bottom: 0;
+  background: white;
+  width: 100%;
+}
+
+
+
+App.js
+<div className="app-footer pa">
+					Copyright © 2020 Reliance Jio Infocomm Ltd. All rights reserved.!
+</div>
