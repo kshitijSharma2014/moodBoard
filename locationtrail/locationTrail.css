@@ -200,16 +200,16 @@ input:checked+.slider:before {
 }
 
 .highDensity {
-    background-color: #e93d3d;
+    background-color: #FF0000;
 }
 
 .mediumDensity {
-    background-color: #2196F3;
+    background-color: #0000FF;
     margin-left: 5px;;
 }
 
 .lowDensity {
-    background-color: green;
+    background-color: #00FFFF;
     margin-left: 5px;
 }
 
