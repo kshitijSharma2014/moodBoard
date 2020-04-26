@@ -9,12 +9,14 @@ class Map extends React.Component {
       currPosition: null,
     }
     this.setCurrLoc = this.setCurrLoc.bind(this);
+    this.onScriptLoad = this.onScriptLoad.bind(this);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this.setCurrLoc, function () {
       });
     } else {
       console.log('error')
     }
+    this.map = null;
   }
 
   setCurrLoc = (position) => {
@@ -23,6 +25,7 @@ class Map extends React.Component {
       lng: position.coords.longitude
     };
     this.setState({ currPosition: currPosition })
+    this.onScriptLoad();
   }
 
   onMapLoad = (map, position) => {
@@ -57,9 +60,12 @@ class Map extends React.Component {
       fullscreenControl: false,
       mapTypeControl: false
     };
-    this.map = new window.google.maps.Map(
-      document.getElementById('newMap'), option);
-    this.onMapLoad(this.map, position);
+    if (window.google) {
+      this.map = new window.google.maps.Map(
+        document.getElementById('newMap'), option);
+      this.onMapLoad(this.map, position);
+    }
+    
   }
 
   componentDidMount() {
@@ -91,7 +97,7 @@ class Map extends React.Component {
     return (
       <div style={{ width: '100%', height: '100%' }}>
         <div style={{ width: '100%', height: '100%' }} id="newMap"></div>
-        <img src={require("./marker.svg")} onClick={this.setCurrentLocation} className="markerSvg pa" />
+        <img alt="marker" src={require("./marker.svg")} onClick={this.setCurrentLocation} className="markerSvg pa" />
       </div>
     )
   }
