@@ -4,7 +4,7 @@
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 0.3rem;
     width: 30%;
-    height: 180px;
+    height: 190px;
     z-index: 2;
     left: 35%;
 }
@@ -52,7 +52,7 @@
 }
 
 .titleContainer {
-    height: 90px;
+    height: 100px;
     padding: 20px;
     color: grey;
 }
@@ -100,3 +100,16 @@
     padding-bottom: 8px;
     font-size: 12px;
 }
+#associate {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0 auto;
+    font-size: 12px;
+  }
+  
+  #associate td, #customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+    
+  #associate tr:hover {background-color: #ddd;}
