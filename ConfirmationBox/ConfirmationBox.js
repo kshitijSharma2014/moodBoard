@@ -11,8 +11,18 @@ class ConfirmationBox extends React.Component {
                 <div className="df fc">
                     <div className="titleContainer">
                         <div className="box_bodyTitle">You  are about to update a site location. Please make sure location is correct. </div>
-                        <div className="mt8"><span class="box_body box_bodyLabel">Location:</span><span class="box_body">{`${_get(this, 'props.position.lat', '19')}, ${_get(this, 'props.position.lng', '82')}`}</span></div>
-                        <div><span class="box_body box_bodyLabel">Address:</span><span class="box_body">{_get(this, 'props.selectedLocation.label', 'test label')}</span></div>
+                        <table id="associate">
+                            <tr>
+                                <td>Location</td>
+                                <td>{`${(+_get(this, 'props.position.lat', '19')).toFixed(4)}, ${(+_get(this, 'props.position.lng', '82')).toFixed(4)}`}</td>
+                            </tr>
+                            <tr>
+                                <td>Address</td>
+                                <td>{_get(this, 'props.selectedLocation.label', 'test label ')}</td>
+                            </tr>
+                        </table>
+                        {/* <div className="mt8"><span class="box_body box_bodyLabel">Location:</span><span class="box_body">{`${_get(this, 'props.position.lat', '19')}, ${_get(this, 'props.position.lng', '82')}`}</span></div>
+                        <div><span class="box_body box_bodyLabel">Address:</span><span class="box_body">{_get(this, 'props.selectedLocation.label', 'test label')}</span></div> */}
                     </div>
                     <div className="boxbtnGrp df">
                         <button onClick={this.props.closeConfirmationBox} className="btn btn-secondary cancelBtn">Cancel</button>
