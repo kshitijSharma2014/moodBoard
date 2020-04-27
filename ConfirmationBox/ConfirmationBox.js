@@ -10,9 +10,9 @@ class ConfirmationBox extends React.Component {
             <div className="pa confirmationBoxContainer">
                 <div className="df fc">
                     <div className="titleContainer">
-                        <div class="box_bodyTitle">You  are about to update a site location. Please make sure location is correct. </div>
-                        <div class="mt8"><span class="box_body box_bodyLabel">Location:</span><span class="box_body">{`${_get(this, 'props.position.lat', '19')}, ${_get(this, 'props.position.lng', '82')}`}</span></div>
-                        <div><span class="box_body box_bodyLabel">Address:</span><span class="box_body">{_get(this, 'props.selectedLocation.label', 'kharghar raghunath vihar h 291 kshijt sharma has got admission in UBC')}</span></div>
+                        <div className="box_bodyTitle">You  are about to update a site location. Please make sure location is correct. </div>
+                        <div className="mt8"><span class="box_body box_bodyLabel">Location:</span><span class="box_body">{`${_get(this, 'props.position.lat', '19')}, ${_get(this, 'props.position.lng', '82')}`}</span></div>
+                        <div><span class="box_body box_bodyLabel">Address:</span><span class="box_body">{_get(this, 'props.selectedLocation.label', 'test label')}</span></div>
                     </div>
                     <div className="boxbtnGrp df">
                         <button onClick={this.props.closeConfirmationBox} className="btn btn-secondary cancelBtn">Cancel</button>
