@@ -112,3 +112,40 @@
   }
     
   #associate tr:hover {background-color: #ddd;}
+
+
+
+@media only screen and (max-width:400px) {
+    /* For mobile phones: */
+    .infoIconImg {
+        width: 20px;
+        height: 20px;
+        z-index: 1;
+        background: white;
+        border-radius: 50%;
+        top: 60px !important;
+    }
+}
+
+
+@media only screen and (max-width:350px) {
+    /* For mobile phones: */
+    .infoIconImg {
+        width: 20px;
+        height: 20px;
+        z-index: 1;
+        background: white;
+        border-radius: 50%;
+        top: 105px !important;
+    }
+}
+
+
+
+@media only screen and (max-width:550px) {
+    /* For tablets: */
+    .selectBoxContainer {
+        width: 300px;
+        z-index: 2;
+    }
+}
