@@ -14,8 +14,8 @@ console.log('plaintext', plaintext)
 var byteKey = [70,200,194,219,180,167,126,150,103,7,134,32,79,250,187,212,26,184,176,60,188,67,144,115,237,37,29,91,127,76,165,119]; 
 var byteIV  = [205,168, 215,148,19,183,138,126,61,205,236,101,59,220,24,248];
 
-var testkey = CryptoJS.enc.Hex.parse(CryptoJS.lib.WordArray.create(byteKey));
-var testiv = CryptoJS.enc.Hex.parse(CryptoJS.lib.WordArray.create(byteIV));
+var testkey = CryptoJS.enc.Base64.stringify(CryptoJS.lib.WordArray.create(byteKey));
+var testiv = CryptoJS.enc.Base64.stringify(CryptoJS.lib.WordArray.create(byteIV));
 
 var  message = '7303350235'
 var encrypted =  CryptoJS.AES.encrypt(message, testkey, {
