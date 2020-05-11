@@ -24,3 +24,15 @@ change in navigationbar.js
 options={this.props.sites.sort(dynamicsort("verified","asc"))}
 //options={[{ label: "kshitij sharma kshitij sharma kshitij sharma verified", value: "kshitij", verified: 1 }, { label: "kshitij sharma kshitij sharma kshitij sharma", value: "sharma", verified: 0 }].sort(dynamicsort("verified","asc"))}
           
+function onDateFilterApply() {
+        dateFilterType = $('#dateFilterType').val();
+        dateValue = $('#dateFilterValue').val();
+        if (dateFilterType !== 'Select filter type' && dateValue !== '') {
+                expTable.ajax.reload();
+        } else {
+            $("#snoAlertDangerBox").empty();
+            $("#snoAlertDangerBox").fadeIn();
+            $('<p style="font-size:12px">Please select all values</p>').appendTo('#snoAlertDangerBox');
+            closeSnoDangerAlertBox();
+        }
+    }
