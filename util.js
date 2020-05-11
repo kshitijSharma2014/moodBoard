@@ -36,3 +36,34 @@ function onDateFilterApply() {
             closeSnoDangerAlertBox();
         }
     }
+
+
+.otpResend {
+  text-align: center;
+  color: #ffffff;
+  margin-left: auto;
+  margin-right: auto;
+  bottom: 50px;
+  margin-top: 50px;
+  width: 100%;
+  text-decoration: underline;
+}
+
+.titleContainer {
+    height: 170px;
+    padding: 20px;
+    color: grey;
+}
+
+
+.boxbtnGrp {
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px;
+    border-top: 1px solid #e9ecef;
+    height: 30px;
+}
+
+.confirmationBoxContainer -> 260px
+
+confirmationbox.js df fc
