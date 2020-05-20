@@ -26,7 +26,7 @@
                     <a href="@Url.Action("Index","Dashboard")"><i class="fa fa-home"></i> Home</a>
                 </li>
                 <li>
-                    <a href="@Url.Action("ClaimManagement", "ClaimManagementAccess")"><i class="fa fa-rupee" ></i> Claim Management</a>
+                    <a href="@Url.Action("Employee", "FR")"><i class="fa fa-rupee" ></i> FR Admin</a>
                 </li>
                 <li class="active">Employee Access</li>
             </ul>
@@ -45,13 +45,14 @@
                 </div>
                 <div>
                     <select onchange="onChangeEmpSort(event)" class="selectSortBox">
-                        <option value="EMPLOYEEID">Employee Id</option>
-                        <option value="createdby">Created by</option>
-                        <option value="createdon">Created on</option>
-                        <option value="MODIFIEDBY">Modified by</option>
-                        <option value="modifiedon">Modified on</option>
-                        <option value="ifavailable">If Available</option>
-                        <option value="ifmandatory">If Mandatory</option>
+                        <option value="employeeid">Employee Id</option>
+                        <option value="createdby">Created By</option>
+                        <option value="createdon">Created On</option>
+                        <option value="modifiedby">Modified By</option>
+                        <option value="modifiedon">Modified On</option>
+                        <option value="ifavailable">Enabled</option>
+                        <option value="ifmandatory">Mandatory</option>
+                        <option value="ifregistered">Registered</option>
                     </select>
                 </div>
             </div>
@@ -67,12 +68,13 @@
                 <tr>
                     <th>Sr No.</th>
                     <th>Employee ID</th>
-                    <th>Created by</th>
-                    <th>Created on</th>
-                    <th>Modified by</th>
-                    <th>Modified on</th>
-                    <th>If Available</th>
-                    <th>If Mandatory</th>
+                    <th>Created By</th>
+                    <th>Created On</th>
+                    <th>Modified By</th>
+                    <th>Modified On</th>
+                    <th>Enabled</th>
+                    <th>Mandatory</th>
+                   <th>Registered</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -86,7 +88,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Add Employee</h5>
+                    <h5 class="modal-title" id="employeeModalTitle">Add Employee</h5>
                     <button type="button" class="close modalCloseBtn" onclick="closeEmpModal()" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -108,16 +110,16 @@
 
                         <div class="df rwaModalRow">
                             <div class="addRWALabel">
-                                If Mandatory
+                                Mandatory
                             </div>
                             <div class="accessRadio">
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" value="yes" name="empMandatory"
+                                    <input type="radio" value="Yes" name="empMandatory"
                                            class="custom-control-input">
                                     <label class="custom-control-label" for="mandatory">Yes</label>
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" value="no" name="empMandatory"
+                                    <input type="radio" value="No" name="empMandatory"
                                            class="custom-control-input">
                                     <label class="custom-control-label" for="nomandatory">No</label>
                                 </div>
@@ -126,16 +128,16 @@
 						
 						 <div class="df rwaModalRow">
                             <div class="addRWALabel">
-                                If Available
+                                Enabled
                             </div>
                             <div class="accessRadio">
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" value="yes" name="empAvailable"
+                                    <input type="radio" value="Yes" name="empAvailable"
                                            class="custom-control-input">
                                     <label class="custom-control-label" for="available">Yes</label>
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" value="no" name="empAvailable"
+                                    <input type="radio" value="No" name="empAvailable"
                                            class="custom-control-input">
                                     <label class="custom-control-label" for="noavailable">No</label>
                                 </div>
@@ -144,16 +146,16 @@
 
                         <div class="df rwaModalRow">
                             <div class="addRWALabel">
-                                If Registered
+                                Registered
                             </div>
                             <div class="accessRadio">
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" value="yes" name="empRegistered"
+                                    <input type="radio" value="Yes" name="empRegistered"
                                            class="custom-control-input">
                                     <label class="custom-control-label" for="registered">Yes</label>
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" value="no" name="empRegistered"
+                                    <input type="radio" value="No" name="empRegistered"
                                            class="custom-control-input">
                                     <label class="custom-control-label" for="noregistered">No</label>
                                 </div>
@@ -175,7 +177,7 @@
     </div>
 
 
-    <script src="~/Areas/Admin/js/claims/employeeTable.js"></script>
+    <script src="~/Areas/Admin/js/fr/employeeTable.js"></script>
 </body>
 
 </html>

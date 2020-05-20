@@ -17,7 +17,7 @@
 
     <body>
         <div class="m-b-md">
-            <h3 class="m-b-none">Employee Access</h3>
+            <h3 class="m-b-none">Job Role Access</h3>
         </div>
         <div class="row">
             <div class="col-lg-12">
@@ -26,9 +26,9 @@
                         <a href="@Url.Action("Index","Dashboard")"><i class="fa fa-home"></i> Home</a>
                     </li>
                     <li>
-                        <a href="@Url.Action("ClaimManagement", "ClaimManagementAccess")"><i class="fa fa-rupee" ></i> Claim Management</a>
+                        <a href="@Url.Action("Role", "FR")"><i class="fa fa-rupee" ></i> FR Admin</a>
                     </li>
-                    <li class="active">Employee Access</li>
+                    <li class="active">Job Role Access</li>
                 </ul>
             </div>
             <div class="col-lg-12" id="dvPageMessage">
@@ -38,7 +38,7 @@
 
         <div class="bigBox marginTop">
             <div class="df" style="justify-content:space-between;">
-                <div class="m-l-4 CMAlabel">Job Role Table Table</div>
+                <div class="m-l-4 CMAlabel">Job Role Table</div>
                 <div class="df pa selectesaSortBy">
                     <div>
                         Sort
@@ -46,16 +46,16 @@
                     <div>
                         <select onchange="onChangejobCodeSort()" class="selectSortBox">
                             <option value="jobcode">Job Code</option>
-                            <option value="createdby">Created by</option>
-                            <option value="createdon">Created on</option>
-                            <option value="MODIFIEDBY">Modified by</option>
-                            <option value="modifiedon">Modified on</option>
-                            <option value="ifavailable">If Available</option>
-                            <option value="ifmandatory">If Mandatory</option>
+                            <option value="createdby">Created By</option>
+                            <option value="createdon">Created On</option>
+                            <option value="modifiedby">Modified By</option>
+                            <option value="modifiedon">Modified On</option>
+                            <option value="ifavailable">Enabled</option>
+                            <option value="ifmandatory">Mandatory</option>
                         </select>
                     </div>
                 </div>
-                <div class="excel_box" onclick="tableExport(2)">
+                <div class="excel_box" onclick="roleTablExport()">
                 @*<div class="excel_box">*@
                     @*<a id="lnkExportAtt" href="~/ClaimManagementAccess/ExportData/?TabType=2&ids=1234" target="_blank">  <img src=" /Areas/Admin/images/excel_export.png" style="width: 20px;height: 20px;margin-left: 2px;" /></a>*@
                     <img src=" /Areas/Admin/images/excel_export.png" class="excel_export" id="ewaExport" />
@@ -67,13 +67,12 @@
                     <tr>
                         <th>Sr No.</th>
                         <th>Job Code</th>
-                        <th>Created by</th>
-                        <th>Created on</th>
-                        <th>Modified by</th>
-                        <th>Modified on</th>
-                        <th>If Available</th>
-                        <th>If Mandatory</th>
-                        <th>If Registered</th>
+                        <th>Created By</th>
+                    <th>Created On</th>
+                    <th>Modified By</th>
+                    <th>Modified On</th>
+                    <th>Enabled</th>
+                    <th>Mandatory</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -87,7 +86,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Add Job Role</h5>
+                        <h5 class="modal-title" id="RoleModalTitle">Add Job Role</h5>
                         <button type="button" class="close modalCloseBtn" onclick="closeEsaModal()" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -107,16 +106,16 @@
 
                             <div class="df rwaModalRow">
                                 <div class="addRWALabel">
-                                    If Mandatory
+                                    Mandatory
                                 </div>
                                 <div class="accessRadio">
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" value="yes" name="jobCodeMandatory"
+                                        <input type="radio" value="Yes" name="jobCodeMandatory"
                                                class="custom-control-input">
                                         <label class="custom-control-label" for="mandatory">Yes</label>
                                     </div>
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" value="no" name="jobCodeMandatory"
+                                        <input type="radio" value="No" name="jobCodeMandatory"
                                                class="custom-control-input">
                                         <label class="custom-control-label" for="nomandatory">No</label>
                                     </div>
@@ -125,42 +124,21 @@
     						
     						 <div class="df rwaModalRow">
                                 <div class="addRWALabel">
-                                    If Available
+                                    Enabled
                                 </div>
                                 <div class="accessRadio">
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" value="yes" name="jobCodeAvailable"
+                                        <input type="radio" value="Yes" name="jobCodeAvailable"
                                                class="custom-control-input">
                                         <label class="custom-control-label" for="available">Yes</label>
                                     </div>
                                     <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" value="no" name="jobCodeAvailable"
+                                        <input type="radio" value="No" name="jobCodeAvailable"
                                                class="custom-control-input">
                                         <label class="custom-control-label" for="noavailable">No</label>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="df rwaModalRow">
-                                <div class="addRWALabel">
-                                    If Registered
-                                </div>
-                                <div class="accessRadio">
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" value="yes" name="jobCodeResgistered"
-                                               class="custom-control-input">
-                                        <label class="custom-control-label" for="registered">Yes</label>
-                                    </div>
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" value="no" name="jobCodeResgistered"
-                                               class="custom-control-input">
-                                        <label class="custom-control-label" for="noregistered">No</label>
-                                    </div>
-                                </div>
-                            </div>
-                            
-
-                       
                             </div>
                         </div>
                     <div class="modal-footer">
@@ -173,7 +151,7 @@
             </div>
 
 
-        <script src="~/Areas/Admin/js/claims/jobCodeTable.js"></script>
+        <script src="~/Areas/Admin/js/fr/jobCodeTable.js"></script>
     </body>
 
     </html>

@@ -1,6 +1,6 @@
 
 var jobCodeTableCounter=0;
-var empOrderBy = 'ilastupdatedon';
+var empOrderBy = 'createdon';
 
 var jobCodeTable = $('#jobCodeTable').DataTable({
     "ajax": {
@@ -45,9 +45,9 @@ var jobCodeTable = $('#jobCodeTable').DataTable({
             }
         },
         {
-            "data": "MODIFIEDBY",
+            "data": "modifiedby",
             "render": function (data, type, row, meta) {
-                return '<div>' + row.MODIFIEDBY + '</div>';
+                return '<div>' + row.modifiedby + '</div>';
             }
         },
         {
@@ -70,8 +70,7 @@ var jobCodeTable = $('#jobCodeTable').DataTable({
         },
         {
             "render": function (data, type, row, meta) {
-                return '<img src="/Areas/Admin/images/editRow.png" class="jobRoleEdit" style="width: 14px;cursor:pointer;" id="jobRoleEdit" />' +
-                    '<img src="/Areas/Admin/images/deleteRow.png" class="jobRoleDelete" style="width: 14px;margin-left: 10px;cursor:pointer;" id="jobRoleDelete"  />';
+                return '<img src="/Areas/Admin/images/editRow.png" class="jobRoleEdit" style="width: 14px;cursor:pointer;" id="jobRoleEdit" />';
             }
         },
     ]
@@ -85,7 +84,7 @@ function onChangejobCodeSort(e) {
     let value = e.target.value;
     empOrderBy = value;
     jobCodeTableCounter = 0;
-    esaTable.ajax.url("/FR/GetRoleData?orderBy=" + empOrderBy).load()
+    jobCodeTable.ajax.url("/FR/GetRoleData?orderBy=" + empOrderBy).load()
 }
 
     function onjobCodeClick(e) {
@@ -99,39 +98,40 @@ function onChangejobCodeSort(e) {
  $('#addRole').on('click', function () {
 
         $('#newRoleModal').show();
+        $("#RoleModalTitle").html("Add Role");
         dragElement(document.getElementById("newRoleModal"));
+        $("input[name=empMandatory] :radio").attr('checked', false);
+        $("input[name=empAvailable] :radio").attr('checked', false);
     });
 
       $('#jobCodeTable').on('click', 'tbody .jobRoleEdit', function () {
         var data_row = empTable.row($(this).closest('tr')).data();
         jobRoleEditMode = true;
         $("#newRoleModal").show();
+        $("#RoleModalTitle").html("Update Role");
        $('#jobCodeInput').val(data_row.jobcode);
         $("#jobCodeInput").prop('disabled', true);
         $("input[name=jobCodeMandatory][value=" + data_row.ifmandatory + "]").attr('checked', 'checked');
        $("input[name=jobCodeAvailable][value=" + data_row.ifavailable + "]").attr('checked', 'checked');
-       $("input[name=jobCodeRegistered][value=" + data_row.ifregistered + "]").attr('checked', 'checked');
     });
-
-
 
 function addJobRoleRow() {
 
     var datatableData = {
-        ifmandatory: $("input[name=jobCodeMandatory]").val(),
-        ifavailable: $("input[name=jobCodeAvailable]").val(),
-        ifregistered: $("input[name=jobCodeRegistered]").val(),
+        ifmandatory: $("input[name=jobCodeMandatory]:checked").val(),
+        ifavailable: $("input[name=jobCodeAvailable]:checked").val(),
        jobcode: $('#jobCodeInput').val(),
     }
 
      $.ajax({
             type: "POST",
-            url: '/FR/AddUppdateRole',
+            url: '/FR/AddUpdateRole',
             data: { 'FrRoleData': datatableData },
             'Content-Type': 'application/json; charset=utf-8',
             async: false,
             success: function (data) {
-                
+                jobCodeTableCounter = 0;
+                jobCodeTable.ajax.reload()
              }
         });
         closeJobRoleModal();
@@ -148,13 +148,8 @@ function closeJobRoleModal() {
 }
 
 function roleTablExport() {
-    $.ajax({
-           url: "/FR/DownloadFIle?ifEmpRole=ROLE",
-           type: 'GET',
-           contentType: 'application/x-www-form-urlencoded',
-        }).done(function (data) {
-
-        });
+    urltoexport = "DownloadFIle?ifEmpRole=ROLE";
+    window.location = urltoexport;
 }
 
 
