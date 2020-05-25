@@ -1,4 +1,4 @@
-﻿@{
+@{
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -47,7 +47,7 @@
                     <select onchange="onChangeEmpSort(event)" class="selectSortBox">
                         <option value="employeeid">Employee Id</option>
                         <option value="createdby">Created By</option>
-                        <option value="createdon">Created On</option>
+                        <option value="createdon" selected>Created On</option>
                         <option value="modifiedby">Modified By</option>
                         <option value="modifiedon">Modified On</option>
                         <option value="ifavailable">Enabled</option>
@@ -106,6 +106,12 @@
                                 <div id="empList" class="employeeIdContainer" style="display:none"></div>
 
                             </div>
+                            <div class="employeeDetails df" id="employeeDetails" style="display:none">
+                                <div class="df fc"><div>Employee Name</div><div id="employeename"></div></div>
+                                <div class="df fc"><div>Username</div><div id="username"></div></div>
+                                <div class="df fc"><div>Job Code</div><div id="jobcode"></div></div>
+                                <div class="df fc"><div>Phone no.</div><div id="mobile"></div></div>
+                            </div>
                         </div>
 
                         <div class="df rwaModalRow">
@@ -143,33 +149,36 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="df rwaModalRow">
-                            <div class="addRWALabel">
-                                Registered
-                            </div>
-                            <div class="accessRadio">
-                                <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" value="Yes" name="empRegistered"
-                                           class="custom-control-input">
-                                    <label class="custom-control-label" for="registered">Yes</label>
-                                </div>
-                                <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" value="No" name="empRegistered"
-                                           class="custom-control-input">
-                                    <label class="custom-control-label" for="noregistered">No</label>
-                                </div>
-                            </div>
-                        </div>
-                        
-
-                   
                         </div>
                     </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary closeESAModal" onclick="closeEmpModal()" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="ESAaddRow" onclick="empAddRow()">Submit</button>
                 </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <div class="modal" id="mandatoryCheckModal" tabindex="0" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="employeeModalTitle">FR is disabled, Are you sure you want to make FR mandatory?</h5>
+                    <button type="button" class="close modalCloseBtn" onclick="closeEmpModal()" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary " onclick="closeEmpModal()" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="" onclick="">Yes</button>
                 </div>
                
             </div>
