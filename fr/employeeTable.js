@@ -1,4 +1,4 @@
-
+$('#mandatoryCheckModal').hide();
 var empTableCounter = 0;
 var empOrderBy = 'createdon';
 var empEditMode = false;
@@ -93,21 +93,44 @@ function onChangeEmpSort(e) {
     empTable.ajax.url("/FR/GetEmpData?orderBy=" + empOrderBy).load()
 }
 
+function checkIfEmplExists(empId) {
+    $.ajax({
+        type: "Get",
+        url: '/FR/GetEmp?employeeid='+empId,
+        'Content-Type': 'application/json; charset=utf-8',
+        success: function (data) {
+            if (data.createdon !== '') {
+                $("#employeeModalTitle").html("Update Employee");
+                $("input[name=empMandatory][value=" + data_row.ifmandatory + "]").attr('checked', data.ifmandatory === 'Yes' ? 'checked' : false);
+                $("input[name=empAvailable][value=" + data_row.ifavailable + "]").attr('checked', data.ifavailable === 'Yes' ? 'checked' : false);
+                $("input[name=empRegistered][value=" + data_row.ifregistered + "]").attr('checked', data.ifregistered === 'Yes' ? 'checked' : false);
+            }
+        }
+    });
+}
+
 function onEmpIdClick(e) {
     var empId = e.target.id;
     $('#addEmpId').val(empId);
     $('#empList').hide();
     $('#empList').empty();
-
+    $('#employeeDetails').show();
+    console.log('data src', $(this).attr("data-src"));
+    debugger;
+    var data = $(this).attr("data-src");
+    $('#employeename').val(data.employeename);
+    $('#username').val(data.username);
+    $('#jobcode').val(data.jobcode);
+    $('#mobile').val(data.mobile);
+    checkIfEmplExists(empId);
 }
 
 $('#empAdd').on('click', function () {
     $('#newEmpModal').show();
     $("#employeeModalTitle").html("Add Employee");
     dragElement(document.getElementById("newEmpModal"));
-    $("input[name=empMandatory] :radio").attr('checked', false);
-    $("input[name=empAvailable] :radio").attr('checked', false);
-    $("input[name=empRegistered] :radio").attr('checked', false);
+    $("input[name=empMandatory]").attr('checked', false);
+    $("input[name=empAvailable]").attr('checked', false);
     $('#addEmpId').on("input", SearchEmpSolr);
 });
 
@@ -137,7 +160,7 @@ function SearchEmpSolr(e) {
                 $('#empList').empty();
                 data.map(function (item) {
 
-                    $('#empList').append('<div onclick="onEmpIdClick(event)" id=' + item.employeeid + ' class="employeeid" value=' + item.employeeid + '>' + item.employeeid + '</div>');
+                    $('#empList').append('<div onclick="onEmpIdClick(event)" data-src=' + item + 'id=' + item.employeeid + ' class="employeeid" value=' + item.employeeid + '>' + item.employeeid + '</div>');
                 });
             }
         });
@@ -157,8 +180,6 @@ $('#empTable').on('click', 'tbody .empEdit', function () {
     $("input[name=empAvailable][value=" + data_row.ifavailable + "]").attr('checked', 'checked');
     $("input[name=empRegistered][value=" + data_row.ifregistered + "]").attr('checked', 'checked');
     $("#addEmpId").prop('disabled', true);
-    $("input[name=empRegistered] label").attr("disabled", true);
-    $("input[name=empRegistered] :radio").attr("disabled", true);
 });
 
 function empAddRow() {
@@ -190,8 +211,8 @@ function closeEmpModal() {
     $('#empList').empty();
     $("#addEmpId").prop('disabled', false);
     $('#empList').hide();
-    $('#newEmpModal').hide();
-
+    $('#newEmpModal').hide();    
+    $('#employeeDetails').hide();
 }
 
 function dragElement(elmnt) {
@@ -238,7 +259,6 @@ function employeeTableExport() {
     window.location = urltoexport;
 }
 
-
-
-
-
+function closeEmpModal() {
+    $('#mandatoryCheckModal').hide();
+}
