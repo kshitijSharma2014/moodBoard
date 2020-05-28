@@ -118,10 +118,10 @@ function onEmpIdClick(e) {
     console.log('data src', $(this).attr("data-src"));
     debugger;
     var data = $(this).attr("data-src");
-    $('#employeename').val(data.employeename);
-    $('#username').val(data.username);
-    $('#jobcode').val(data.jobcode);
-    $('#mobile').val(data.mobile);
+    $('#employeename').html(data.employeename);
+    $('#username').html(data.username);
+    $('#jobcode').html(data.jobcode);
+    $('#mobile').html(data.mobile);
     checkIfEmplExists(empId);
 }
 
@@ -132,6 +132,12 @@ $('#empAdd').on('click', function () {
     $("input[name=empMandatory]").attr('checked', false);
     $("input[name=empAvailable]").attr('checked', false);
     $('#addEmpId').on("input", SearchEmpSolr);
+});
+
+$('#empTable').on('click', 'th', function() {
+    var info = table.fnSettings().aaSorting;
+    var idx = info[0][0];
+    alert(idx);
 });
 
 
