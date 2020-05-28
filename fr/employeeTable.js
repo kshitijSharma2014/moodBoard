@@ -115,13 +115,14 @@ function onEmpIdClick(e) {
     $('#empList').hide();
     $('#empList').empty();
     $('#employeeDetails').show();
-    console.log('data src', $(this).attr("data-src"));
+    var empData =  searchEmpDta.filter(function(item) {
+        return item.employeeid == empId;
+    });
     debugger;
-    var data = $(this).attr("data-src");
-    $('#employeename').html(data.employeename);
-    $('#username').html(data.username);
-    $('#jobcode').html(data.jobcode);
-    $('#mobile').html(data.mobile);
+    $('#employeename').html(empData.employeename);
+    $('#username').html(empData.username);
+    $('#jobcode').html(empData.jobcode);
+    $('#mobile').html(empData.mobile);
     checkIfEmplExists(empId);
 }
 
@@ -140,6 +141,7 @@ $('#empTable').on('click', 'th', function() {
     alert(idx);
 });
 
+var searchEmpDta = [];
 
 function SearchEmpSolr(e) {
     var queryParam = e.target.value;
@@ -156,17 +158,17 @@ function SearchEmpSolr(e) {
             'Content-Type': 'application/html; charset=utf-8',
             success: function (responnse) {
 
-                let data = JSON.parse(responnse).response.docs || [];
-                if (data.length === 0) {
+                let searchEmpDta = JSON.parse(responnse).response.docs || [];
+                if (searchEmpDta.length === 0) {
                     $('#empList').hide();
                 } else {
                     $('#empList').show();
                 }
 
                 $('#empList').empty();
-                data.map(function (item) {
+                searchEmpDta.map(function (item) {
 
-                    $('#empList').append('<div onclick="onEmpIdClick(event)" data-src=' + item + 'id=' + item.employeeid + ' class="employeeid" value=' + item.employeeid + '>' + item.employeeid + '</div>');
+                    $('#empList').append('<div onclick="onEmpIdClick(event)" id=' + item.employeeid + ' class="employeeid" value=' + item.employeeid + '>' + item.employeeid + '</div>');
                 });
             }
         });
